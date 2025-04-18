@@ -4,8 +4,16 @@
         <servlet-name>Account</servlet-name>
         <servlet-class>controller.Account</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMenteeProfile</servlet-name>
+        <servlet-class>controller.ViewMenteeProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Account</servlet-name>
         <url-pattern>/Account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMenteeProfile</servlet-name>
+        <url-pattern>/ViewMenteeProfile</url-pattern>
     </servlet-mapping>
 </web-app>
