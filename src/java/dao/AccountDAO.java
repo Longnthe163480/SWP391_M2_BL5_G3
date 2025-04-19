@@ -6,6 +6,9 @@ package dao;
 
 import dbcontext.DBContext;
 import entity.Account;
+import entity.Role;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,6 +34,57 @@ public class AccountDAO extends DBContext {
         } catch (Exception e) {
         }
         return account;
+    }
+
+    public List<Account> pagingAccount(int index){
+        List<Account> list=new ArrayList<>();
+         query = "SELECT * FROM Account \n"
+                 + "ORDER BY id\n"
+                 + "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+         try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String accountname = rs.getString("accountname");
+                String pasword = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String email = rs.getString("email");
+                list.add(new Account(id, accountname, pasword, roleid, email));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public int getTotalAccount(){
+        query = "SELECT COUNT(*) count FROM Account";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+    public List<Role> getRole(){
+        List<Role> role = new ArrayList<>();
+        query = "SELECT * FROM Roles WHERE [name] NOT LIKE 'admin'";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id=rs.getInt("id");                
+                String rname=rs.getString("name");
+                role.add(new Role(id, rname));
+            }
+        } catch (Exception e) {
+        }
+        return role;
     }
     
 }
