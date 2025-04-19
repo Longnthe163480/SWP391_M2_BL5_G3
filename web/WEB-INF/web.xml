@@ -12,6 +12,10 @@
         <servlet-name>ViewAllMentor</servlet-name>
         <servlet-class>controller.ViewAllMentor</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchMentor</servlet-name>
+        <servlet-class>controller.SearchMentor</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Account</servlet-name>
         <url-pattern>/Account</url-pattern>
@@ -23,5 +27,9 @@
     <servlet-mapping>
         <servlet-name>ViewAllMentor</servlet-name>
         <url-pattern>/ViewAllMentor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchMentor</servlet-name>
+        <url-pattern>/SearchMentor</url-pattern>
     </servlet-mapping>
 </web-app>
