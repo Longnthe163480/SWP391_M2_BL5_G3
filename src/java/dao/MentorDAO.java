@@ -59,5 +59,34 @@ public class MentorDAO extends DBContext {
         return 0;
     }
 
+    public List<Mentor> searchMentor(String name, int index) {
+        List<Mentor> list = new ArrayList<>();
+        query = "SELECT * FROM Mentor m WHERE m.name LIKE ?\n"
+                + "ORDER BY id\n"
+                + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, "%" + name + "%");
+            ps.setInt(2, (index - 1) * 3);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String mentorname = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                list.add(new Mentor(id, accountid, mentorname, address, phone, birthday, sex, introduce, achievement, avatar, costHire));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
     
 }
