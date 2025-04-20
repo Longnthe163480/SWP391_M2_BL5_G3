@@ -221,4 +221,70 @@ public class MentorDAO extends DBContext {
         }
         return list;
     }
+
+    public Mentor getMentorbyAccID(int accid) {
+        query = "SELECT * FROM Mentor WHERE accountid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                return new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public List<Mentor> getAllMentor() {
+        List<Mentor> list = new ArrayList<>();
+        query = "SELECT * FROM Mentor";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                list.add(new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public List<Skill> getallskill() {
+        List<Skill> list = new ArrayList<>();
+        query = "SELECT * FROM skill";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                list.add(new Skill(id, name));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
 }

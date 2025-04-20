@@ -86,5 +86,76 @@ public class AccountDAO extends DBContext {
         }
         return role;
     }
+
+    public Account getAccount(String username, String password) {
+        Account account = null;
+        query = "SELECT * FROM Account WHERE accountname=? AND password=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1,username);
+            ps.setString(2,password);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id=rs.getInt("id");                
+                String name=rs.getString("accountname");
+                String pass=rs.getString("password");
+                int roleid=rs.getInt("roleid");
+                String email=rs.getString("email");
+                account=new Account(id, name, pass, roleid, email);
+            }
+        } catch (Exception e) {
+        }
+        return account;
+    }
+
+    public int checkrole(int accid) {
+        query = "SELECT r.id id FROM roles r, ACCOUNT a WHERE r.id=a.roleid AND a.id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int role = rs.getInt("id");
+                return role;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }    
+
+    public boolean checkAccount(String username, String email){
+        Account account = null;
+        query = "SELECT * FROM Account WHERE accountname=? OR email=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1,username);
+            ps.setString(2,email);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id=rs.getInt("id");                
+                String name=rs.getString("accountname");
+                String pass=rs.getString("password");
+                int roleid=rs.getInt("roleid");
+                String emails=rs.getString("email");
+                account=new Account(id, name, pass, roleid, emails);
+            }
+        } catch (Exception e) {
+        }
+        if(account==null) return true;
+        else return false;
+    }
+
+    public void insertAccount(String username,String password,int roleid, String email){
+        query = "INSERT INTO Account VALUES (?,?,?,?)";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1,username);
+            ps.setString(2,password);
+            ps.setInt(3,roleid);
+            ps.setString(4,email);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
     
 }
