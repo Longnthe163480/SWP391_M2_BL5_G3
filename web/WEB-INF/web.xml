@@ -24,6 +24,14 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
+    <servlet>    
+        <servlet-name>ViewMentorDetail</servlet-name>
+        <servlet-class>controller.ViewMentorDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewTop3Mentor</servlet-name>
+        <servlet-class>controller.ViewTop3Mentor</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -48,4 +56,15 @@
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/Register</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMentorDetail</servlet-name>
+        <url-pattern>/ViewMentorDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewTop3Mentor</servlet-name>
+        <url-pattern>/ViewTop3Mentor</url-pattern>
+    </servlet-mapping>
+     <welcome-file-list>
+        <welcome-file>ViewTop3Mentor</welcome-file>
+    </welcome-file-list>
 </web-app>
