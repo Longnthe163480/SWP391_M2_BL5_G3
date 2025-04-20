@@ -1,9 +1,3 @@
-<%-- 
-    Document   : AccountList
-    Created on : Mar 22, 2023, 9:08:39 AM
-    Author     : okanh
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -43,7 +37,7 @@
         ======================================================== -->
     </head>
     <body>
-        <c:if test="${sessionScope.account.roleid==3}">
+        
             <jsp:include page="guest/Header.jsp" />
             <main id="main" style="position: relative">
                 <section class="breadcrumbs">
@@ -125,7 +119,7 @@
 
             </nav>
             <jsp:include page="guest/Footer.jsp" />
-        </c:if>
+        
         
         <!-- Vendor JS Files -->
         <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
