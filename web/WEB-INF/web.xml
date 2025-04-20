@@ -16,6 +16,10 @@
         <servlet-name>ViewAllAccount</servlet-name>
         <servlet-class>controller.ViewAllAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMentorDetail</servlet-name>
+        <servlet-class>controller.ViewMentorDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -31,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>ViewAllAccount</servlet-name>
         <url-pattern>/ViewAllAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMentorDetail</servlet-name>
+        <url-pattern>/ViewMentorDetail</url-pattern>
     </servlet-mapping>
 </web-app>
