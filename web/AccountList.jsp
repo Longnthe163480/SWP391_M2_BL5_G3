@@ -37,7 +37,7 @@
         ======================================================== -->
     </head>
     <body>
-        
+        <c:if test="${sessionScope.account.roleid==3}">
             <jsp:include page="guest/Header.jsp" />
             <main id="main" style="position: relative">
                 <section class="breadcrumbs">
@@ -119,7 +119,7 @@
 
             </nav>
             <jsp:include page="guest/Footer.jsp" />
-        
+        </c:if>
         
         <!-- Vendor JS Files -->
         <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>

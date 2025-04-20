@@ -167,4 +167,62 @@ public class AccountDAO extends DBContext {
         } catch (Exception e) {
         }
     }
+
+   public List<Account> searchAccount(String infor,int index){
+        List<Account> list=new ArrayList<>();
+        query = "SELECT * FROM Account  WHERE (accountname LIKE ? OR email LIKE ?)\n"
+                + "ORDER BY id\n"
+                + "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, "%" + infor + "%");
+            ps.setString(2, "%" + infor + "%");
+            ps.setInt(3, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String accountname = rs.getString("accountname");
+                String pass = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String email = rs.getString("email");
+                list.add(new Account(id, accountname, pass, roleid, email));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public void insertadminAccount(String username,String password, String email){
+        query = "INSERT INTO Account VALUES (?,?,3,?)";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1,username);
+            ps.setString(2,password);
+            ps.setString(3,email);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+    public boolean checkadminAccount(String username){
+        Account account = null;
+        query = "SELECT * FROM Account WHERE accountname=? ";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1,username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id=rs.getInt("id");                
+                String name=rs.getString("accountname");
+                String pass=rs.getString("password");
+                int roleid=rs.getInt("roleid");
+                String emails=rs.getString("email");
+                account=new Account(id, name, pass, roleid, emails);
+            }
+        } catch (Exception e) {
+        }
+        if(account==null) return true;
+        else return false;
+    }
+    
 }
