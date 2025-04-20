@@ -44,6 +44,14 @@
         <servlet-name>LogOut</servlet-name>
         <servlet-class>controller.LogOut</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchAccount</servlet-name>
+        <servlet-class>controller.SearchAccount</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateAdminAccount</servlet-name>
+        <servlet-class>controller.CreateAdminAccount</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -87,6 +95,14 @@
     <servlet-mapping>
         <servlet-name>LogOut</servlet-name>
         <url-pattern>/LogOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchAccount</servlet-name>
+        <url-pattern>/SearchAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateAdminAccount</servlet-name>
+        <url-pattern>/CreateAdminAccount</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
