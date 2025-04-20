@@ -114,5 +114,37 @@ public class MentorDAO extends DBContext {
         return mentor;
     }
 
+    public List<Mentor> getTop3Mentor() {
+        List<Mentor> list = new ArrayList<>();
+        query = "WITH t AS(SELECT mc.mentorid id,AVG(CAST (f.star AS FLOAT(2))) averageStar FROM Feedback f, feedbackanswer fa, answer a, mentorcoderequest mc\n"
+                + "WHERE f.id=fa.feedbackid and fa.answerid=a.id and a.mentorcoderequestid=mc.id\n"
+                + "GROUP BY mc.mentorid)\n"
+                + "SELECT TOP (2) m.id,m.accountid,m.name,m.address,m.phone,m.birthday,m.sex,m.introduce,m.achievement,m.avatar,m.costHire,t.averageStar\n"
+                + "FROM mentor m,t WHERE m.id=t.id\n"
+                + "ORDER BY t.averageStar";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                float averageStar = rs.getFloat("averageStar");
+                list.add(new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire, averageStar));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+
     
 }
