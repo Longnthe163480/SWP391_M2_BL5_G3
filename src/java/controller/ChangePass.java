@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
 import dao.*;
@@ -13,51 +14,40 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.*;
 
 /**
  *
- * @author okanh
+ * @author Administrator
  */
-public class ViewAllAccount extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class ChangePass extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        AccountDAO dao=new AccountDAO();
-        String index=request.getParameter("index");
-        if(index==null) index="1";
-        int indexp=Integer.parseInt(index);
-        
-        
-        List<Account> list=dao.pagingAccount(indexp);
-        
-        
-        int total=dao.getTotalAccount();
-        int end=total/4;
-        if(total%4!=0) end++;
-        
-        List<Role> role=dao.getRole();
-        
-        request.setAttribute("endpage", end);
-        request.setAttribute("allaccount", list);
-        request.setAttribute("role", role);
-        request.getRequestDispatcher("AccountList.jsp").forward(request, response);
-    }
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ChangePass</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ChangePass at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -65,13 +55,12 @@ public class ViewAllAccount extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
-    }
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -79,13 +68,29 @@ public class ViewAllAccount extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
+        String username=request.getParameter("username");
+        String oldpassword=request.getParameter("oldpassword");
+        String newpassword=request.getParameter("newpassword");
+        String confirmnewpassword=request.getParameter("confirmnewpassword");
+        AccountDAO dao= new AccountDAO();
+        Account acc=dao.getAccount(username, oldpassword);
+        if(!newpassword.equals(confirmnewpassword)){
+            request.setAttribute("error", "New Pass and confirmnewpassword doesn't same!");
+            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+        }else if(acc==null){
+            request.setAttribute("error", "wrong usernamr or old Password!");
+            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+        }else{
+            dao.changePassword(acc.getId(), newpassword);
+            request.setAttribute("success", "Change password is successful!");
+            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+        }
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
