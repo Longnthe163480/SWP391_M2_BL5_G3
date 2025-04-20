@@ -43,7 +43,7 @@
         ======================================================== -->
     </head>
     <body>
-        <!-- jsp:include page="Header.jsp" --><!-- /jsp:include -->
+        <jsp:include page="Header.jsp"></jsp:include>
 
             <main id="main" style="position: relative">
                 <!-- ======= Our Portfolio Section ======= -->
@@ -102,7 +102,7 @@
             <button onclick='window.history.go(-1);' class="btn btn-outline-primary btn-lg" style="position: absolute;bottom: 20px;left: 20px;">Back</button>
 
         </main><!-- End #main -->
-        <!-- jsp:include page="Footer.jsp" --><!-- /jsp:include -->
+        <jsp:include page="Footer.jsp"></jsp:include>
 
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
