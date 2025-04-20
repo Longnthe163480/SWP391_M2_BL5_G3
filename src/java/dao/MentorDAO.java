@@ -88,5 +88,31 @@ public class MentorDAO extends DBContext {
         return list;
     }
 
+    public Mentor getMentorDetail(int mentorid) {
+        Mentor mentor = new Mentor();
+        query = "SELECT * FROM Mentor WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mentorid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                mentor = new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire);
+            }
+        } catch (Exception e) {
+        }
+        return mentor;
+    }
+
     
 }
