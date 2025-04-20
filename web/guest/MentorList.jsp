@@ -47,7 +47,7 @@
     </head>
     <body>
         <!-- ======= Header ======= -->
-        <!-- jsp:include page="Header.jsp" --><!-- /jsp:include -->
+        <jsp:include page="Header.jsp"></jsp:include>
             <!-- End Header -->
 
             <main id="main">
@@ -128,7 +128,7 @@
             </ul>
         </nav>
         <!-- ======= Footer ======= -->
-        <!-- jsp:include page="Footer.jsp" --><!-- /jsp:include -->
+        <jsp:include page="Footer.jsp"></jsp:include>
         <!-- End Footer -->
 
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
