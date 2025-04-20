@@ -17,7 +17,7 @@
                 </div>
                 <div class="nav-menu" id="navMenu">
                     <ul>
-                        <li><a href="home" class="link active">Home</a></li>        
+                        <li><a href="ViewTop3Mentor" class="link active">Home</a></li>        
                     </ul>
                 </div>
                 <div class="nav-button">

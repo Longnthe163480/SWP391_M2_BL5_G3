@@ -57,8 +57,8 @@
                         <li><a class="active " href="ViewTop3Mentor">Home</a></li>
                         <li><a href="ViewAllMentor">Mentor</a></li>
                         <c:if test="${sessionScope.account==null}">
-                        <li><a href="SignIn.jsp">Sign In</a></li>
-                        <li><a href="SignUp.jsp">Sign Up</a></li>
+                        <li><a href="Login">Sign In</a></li>
+                        <li><a href="Register.jsp">Sign Up</a></li>
                         </c:if>
                             <c:if test="${sessionScope.account!=null}">
                                 <c:if test="${sessionScope.getmentee!=null}">
