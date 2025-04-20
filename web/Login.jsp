@@ -36,14 +36,19 @@
             <div class="form-box">
                 <!----------------------------------LOGIN------------------------------------------>
                 <div class="login-container" id="login">
-                    <form action="log" method="post" id="loginForm">
+                    <form action="Login" method="post" id="loginForm">
                         <div class="top">
                             <span>Don't have an account? <a href="Register.jsp">Sign up</a></span>
                             <header>Log In</header>
                         </div>	
                         <div class="top" style="color: red">
                             <span>${err}</span>
-                        </div>	
+                        </div>
+                            <c:if test="${param.msg == 'success'}">
+                                <div class="successMsg">
+                                    ✅ Account created successfully. Please log in.
+                                </div>
+                            </c:if>
                         <div class="input-box">
                             <input type="text" name="username" class="input-field" placeholder="Username or Email">
                             <i class="bx bx-user"></i>

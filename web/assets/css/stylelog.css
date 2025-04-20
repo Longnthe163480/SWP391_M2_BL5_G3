@@ -342,4 +342,13 @@ option {
         flex-direction: column;
         gap: 0;
     }
+    
+    .successMsg{
+        color: green;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 30px;
+        text-align: center;
+    }
 }

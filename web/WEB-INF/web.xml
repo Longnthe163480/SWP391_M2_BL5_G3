@@ -16,6 +16,14 @@
         <servlet-name>ViewAllAccount</servlet-name>
         <servlet-class>controller.ViewAllAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.LoginController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>ViewAllAccount</servlet-name>
         <url-pattern>/ViewAllAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/Register</url-pattern>
     </servlet-mapping>
 </web-app>
