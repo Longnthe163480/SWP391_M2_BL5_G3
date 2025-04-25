@@ -7,6 +7,7 @@ package dao;
 import dbcontext.DBContext;
 import entity.CodeRequest;
 import entity.HireRelationship;
+import entity.HireRequestlist;
 import entity.Mentee;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -122,6 +123,75 @@ public class MenteeDAO extends DBContext {
             ps.executeUpdate();
         } catch (Exception e) {
         }
+    }
+
+    public List<HireRequestlist> pagingMenteeHireRequest(int mid, int index) {
+         List<HireRequestlist> list = new ArrayList<>();
+         query = "SELECT h.id,m.[name],h.title,h.content,m.costHire,s.[Status] FROM hirerequest h, [status] s,mentor m \n"
+                 + "WHERE h.mentorid=m.id AND h.statusid=s.id AND menteeid=?\n"
+                 + "ORDER BY id\n"
+                 + "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+         try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mid);
+            ps.setInt(2, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String mentorname = rs.getString("name");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                float cost=rs.getFloat("costhire");
+                String status = rs.getString("status");
+                list.add(new HireRequestlist(id, mentorname, title, content, cost, status));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public int getTotalMenteeHireRequest(int menteeid) {
+        query = "SELECT COUNT(*) count FROM hirerequest WHERE menteeid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, menteeid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<HireRequestlist> searchHireRequest(String name, int index, int mid) {
+        List<HireRequestlist> list = new ArrayList<>();
+        query = "SELECT h.id,m.[name],h.title,h.content,m.costhire,s.[Status] FROM hirerequest h, [status] s,mentor m \n"
+                 + "WHERE h.mentorid=m.id AND h.statusid=s.id AND menteeid=?\n"
+                + "AND (h.title LIKE ? OR h.content LIKE ? OR m.name LIKE ?)"
+                 + "ORDER BY id\n"
+                 + "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mid);
+            ps.setString(2, "%" + name + "%");
+            ps.setString(3, "%" + name + "%");
+            ps.setString(4, "%" + name + "%");
+            ps.setInt(5, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String mentorname = rs.getString("name");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                float cost=rs.getFloat("costhire");
+                String status = rs.getString("status");
+                list.add(new HireRequestlist(id, mentorname, title, content, cost, status));
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
     
 }
