@@ -287,4 +287,33 @@ public class MentorDAO extends DBContext {
         }
         return list;
     }
+    
+    public MentorRequest getMentorcoderequest(int mid, int rid){
+        query = "SELECT * FROM mentorcoderequest WHERE mentorid=? AND coderequestid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mid);
+            ps.setInt(2, rid);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int coderequestid=rs.getInt("coderequestid");
+                int mentorid=rs.getInt("mentorid");
+                return new MentorRequest(id, coderequestid, mentorid);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void CreateAnswer(int mrid, String content){
+        query = "INSERT INTO answer VALUES (?,?)";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mrid);
+            ps.setString(2, content);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
 }
