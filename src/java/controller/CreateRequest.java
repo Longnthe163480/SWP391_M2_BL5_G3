@@ -2,12 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.*;
 import entity.*;
-import entity.Account;
+import java.sql.Date;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,37 +16,28 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Administrator
+ * @author legen
  */
-public class ChangePass extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+public class CreateRequest extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ChangePass</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ChangePass at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -55,12 +45,13 @@ public class ChangePass extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -68,28 +59,40 @@ public class ChangePass extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String username=request.getParameter("username");
-        String oldpassword=request.getParameter("oldpassword");
-        String newpassword=request.getParameter("newpassword");
-        String confirmnewpassword=request.getParameter("confirmnewpassword");
-        AccountDAO dao= new AccountDAO();
-        Account acc=dao.getAccount(username, oldpassword);
-        if(!newpassword.equals(confirmnewpassword)){
-            request.setAttribute("error", "New Pass and confirmnewpassword doesn't same!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
-        }else if(acc==null){
-            request.setAttribute("error", "wrong usernamr or old Password!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+            throws ServletException, IOException {
+        processRequest(request, response);
+        String menteeid=request.getParameter("menteeid");       
+        String title=request.getParameter("title");
+        String deadline=request.getParameter("deadline");       
+        String content=request.getParameter("content");
+        String[] mentorid=request.getParameterValues("choosementor");
+        String[] skill=request.getParameterValues("skill");
+        if(mentorid==null||skill==null){
+             request.setAttribute("error", "you forget choosse mentor or skill");
+        request.getRequestDispatcher("CreateRequest.jsp").forward(request, response);
         }else{
-            dao.changePassword(acc.getId(), newpassword);
-            request.setAttribute("success", "Change password is successful!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+        int id=Integer.parseInt(menteeid);
+        Date dead=Date.valueOf(deadline);
+        MenteeDAO dao=new MenteeDAO();
+        
+        dao.inserCodeRequest(id, title, content, dead);
+        CodeRequest coderequest=dao.getNewInsertReqeust();
+        for (String s : mentorid) {
+            int a=Integer.parseInt(s);
+            dao.inserMentorCodeRequest(coderequest.getId(),a );
+        }
+        for (String m : skill) {
+            int b=Integer.parseInt(m);
+            dao.inserCodeRequestSkill(coderequest.getId(),b );
+        }
+        request.setAttribute("done", "Create sucess");
+        request.getRequestDispatcher("CreateRequest.jsp").forward(request, response);
         }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
@@ -98,3 +101,4 @@ public class ChangePass extends HttpServlet {
     }// </editor-fold>
 
 }
+

@@ -6,7 +6,6 @@ package controller;
 
 import dao.*;
 import entity.*;
-import entity.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,11 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
+
 /**
  *
- * @author okanh
+ * @author legen
  */
-public class SearchAccount extends HttpServlet {
+public class SearchHireRequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,7 +32,7 @@ public class SearchAccount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
+   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,32 +62,32 @@ public class SearchAccount extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-         String infor =request.getParameter("name");
+        String infor =request.getParameter("name");
          String index=request.getParameter("index");
+         String menteeid=request.getParameter("menteeid");
+         int id=Integer.parseInt(menteeid);
          if(infor.trim().equals("")){
-             request.getRequestDispatcher("ViewAllAccount").forward(request, response);
+             request.getRequestDispatcher("ViewAllHireRequest?menteeid="+id).forward(request, response);
          }
         if(index==null) index="1";
         int indexp=Integer.parseInt(index);
         
         
-        AccountDAO dao=new AccountDAO();
-        List<Account> list=dao.searchAccount(infor, indexp);
-        
+        MenteeDAO dao=new MenteeDAO();
+        List<HireRequestlist> list=dao.searchHireRequest(infor, indexp, id);
+
         
         int total=list.size();
         int end=total/3;
         if(total%3!=0) end++;
         
-        List<Role> role=dao.getRole();
         
         request.setAttribute("endpage", end);
-        request.setAttribute("role", role);
-        request.setAttribute("allaccount", list);
-        request.setAttribute("searchtext", infor);
-        request.getRequestDispatcher("AccountList.jsp").forward(request, response);
-         }
         
+        request.setAttribute("hirerequest", list);
+        request.setAttribute("searchtext", infor);
+        request.getRequestDispatcher("MyHireRequest.jsp").forward(request, response);
+    }
 
     /**
      * Returns a short description of the servlet.

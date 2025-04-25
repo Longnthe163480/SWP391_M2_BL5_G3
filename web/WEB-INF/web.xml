@@ -52,6 +52,22 @@
         <servlet-name>CreateAdminAccount</servlet-name>
         <servlet-class>controller.CreateAdminAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateHireRequest</servlet-name>
+        <servlet-class>controller.CreateHireRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateRequest</servlet-name>
+        <servlet-class>controller.CreateRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewAllHireRequest</servlet-name>
+        <servlet-class>controller.ViewAllHireRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchHireRequest</servlet-name>
+        <servlet-class>controller.SearchHireRequest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -103,6 +119,22 @@
     <servlet-mapping>
         <servlet-name>CreateAdminAccount</servlet-name>
         <url-pattern>/CreateAdminAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateHireRequest</servlet-name>
+        <url-pattern>/CreateHireRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateRequest</servlet-name>
+        <url-pattern>/CreateRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewAllHireRequest</servlet-name>
+        <url-pattern>/ViewAllHireRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchHireRequest</servlet-name>
+        <url-pattern>/SearchHireRequest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
