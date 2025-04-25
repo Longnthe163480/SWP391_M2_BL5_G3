@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author okanh
+ * @author legen
  */
 public class CreateRequest extends HttpServlet {
 
