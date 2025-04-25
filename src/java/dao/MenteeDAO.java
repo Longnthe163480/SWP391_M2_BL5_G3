@@ -5,8 +5,10 @@
 package dao;
 
 import dbcontext.DBContext;
+import entity.CodeRequest;
 import entity.HireRelationship;
 import entity.Mentee;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,59 @@ public class MenteeDAO extends DBContext {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public void inserCodeRequest(int mid, String title, String content, java.sql.Date deadline) {
+        query = "INSERT INTO coderequest VALUES(?,?,?,?);";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, title);
+            ps.setString(2, content);
+            ps.setDate(3, deadline);
+            ps.setInt(4, mid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public CodeRequest getNewInsertReqeust() {
+        query = "SELECT TOP 1 * FROM coderequest ORDER BY id DESC";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                java.sql.Date deadline = rs.getDate("deadline");
+                int menteeid = rs.getInt("menteeid");
+                return new CodeRequest(id, title, content, deadline, menteeid);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void inserMentorCodeRequest(int requestid, int mentorid) {
+        query = "INSERT INTO mentorcoderequest VALUES(?,?);";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, requestid);
+            ps.setInt(2, mentorid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public void inserCodeRequestSkill(int requestid, int skillid) {
+        query = "INSERT INTO coderequestskill VALUES(?,?);";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, requestid);
+            ps.setInt(2, skillid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
     }
     
 }
