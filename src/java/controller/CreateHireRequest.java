@@ -7,19 +7,20 @@ package controller;
 
 import dao.*;
 import entity.*;
-import entity.Account;
+import java.sql.Date;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
  * @author Administrator
  */
-public class ChangePass extends HttpServlet {
+public class CreateHireRequest extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +37,10 @@ public class ChangePass extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangePass</title>");  
+            out.println("<title>Servlet CreateHireRequest</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangePass at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CreateHireRequest at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,22 +70,30 @@ public class ChangePass extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String username=request.getParameter("username");
-        String oldpassword=request.getParameter("oldpassword");
-        String newpassword=request.getParameter("newpassword");
-        String confirmnewpassword=request.getParameter("confirmnewpassword");
-        AccountDAO dao= new AccountDAO();
-        Account acc=dao.getAccount(username, oldpassword);
-        if(!newpassword.equals(confirmnewpassword)){
-            request.setAttribute("error", "New Pass and confirmnewpassword doesn't same!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
-        }else if(acc==null){
-            request.setAttribute("error", "wrong usernamr or old Password!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+        String menteeid=request.getParameter("menteeid"); 
+        String title=request.getParameter("title");
+        String content=request.getParameter("content");
+        String mentorid=request.getParameter("choosementor");
+        
+        if(mentorid==null){
+             request.setAttribute("error", "you forget choosse mentor");
+        request.getRequestDispatcher("CreateHireRequest.jsp").forward(request, response);
         }else{
-            dao.changePassword(acc.getId(), newpassword);
-            request.setAttribute("success", "Change password is successful!");
-            request.getRequestDispatcher("ChangePassword.jsp").forward(request, response);
+            MenteeDAO dao=new MenteeDAO();
+            int id=Integer.parseInt(menteeid);
+            int idmentor=Integer.parseInt(mentorid);
+            List<HireRelationship> rela=dao.getHireRelationship();
+            for (HireRelationship h : rela) {
+                    if (h.getMenteeid() == id && h.getMentorid() == idmentor) {
+                        request.setAttribute("error", "You are hiring this mentor");
+                        request.getRequestDispatcher("CreateHireRequest.jsp").forward(request, response);
+                        return;
+                    }
+            }    
+        dao.inserHireRequest(id,idmentor, title, content);
+        request.setAttribute("done", "Create sucess");
+        request.getRequestDispatcher("CreateHireRequest.jsp").forward(request, response);
+        
         }
     }
 
