@@ -193,5 +193,43 @@ public class MenteeDAO extends DBContext {
         }
         return list;
     }
+
+   public List<CodeRequest> pagingMenteeRequest(int mid, int index) {
+        List<CodeRequest> list = new ArrayList<>();
+        query = "SELECT * FROM coderequest WHERE menteeid=? \n"
+                + "ORDER BY id\n"
+                + "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mid);
+            ps.setInt(2, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                java.sql.Date deadline = rs.getDate("deadline");
+                int menteeid = rs.getInt("menteeid");
+                list.add(new CodeRequest(id, title, content, deadline, menteeid));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public int getTotalMenteeRequest(int menteeid) {
+        query = "SELECT COUNT(*) count FROM coderequest WHERE menteeid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, menteeid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
     
 }
