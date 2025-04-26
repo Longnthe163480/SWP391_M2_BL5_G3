@@ -76,6 +76,10 @@
         <servlet-name>ViewAllRequest</servlet-name>
         <servlet-class>controller.ViewAllRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditHireRequest</servlet-name>
+        <servlet-class>controller.EditHireRequest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>ViewAllRequest</servlet-name>
         <url-pattern>/ViewAllRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditHireRequest</servlet-name>
+        <url-pattern>/EditHireRequest</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
