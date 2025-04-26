@@ -5,6 +5,7 @@
 package dao;
 
 import dbcontext.DBContext;
+import entity.Answer;
 import entity.CodeRequest;
 import entity.Feedback;
 import entity.HireRelationship;
@@ -337,4 +338,63 @@ public class MenteeDAO extends DBContext {
         } catch (Exception e) {
         }
     } 
+
+    public CodeRequest getAReqeustByID(int requestid) {
+        query = "SELECT * FROM coderequest WHERE id=? \n";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, requestid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                java.sql.Date deadline = rs.getDate("deadline");
+                int menteeid = rs.getInt("menteeid");
+                return new CodeRequest(id, title, content, deadline, menteeid);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public Answer getAnswer(int mentorid,int requestid){
+        query = "SELECT a.id,a.mentorcoderequestid,a.content FROM answer a, mentorcoderequest mc \n"
+                + "WHERE a.mentorcoderequestid=mc.id AND mc.mentorid=? AND mc.coderequestid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,mentorid);
+            ps.setInt(2,requestid);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int mcrid=rs.getInt("mentorcoderequestid");
+                String content=rs.getString("content");
+                return new Answer(id, mcrid, content);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public Feedback getfeedback(int mentorid,int requestid){
+        query = "SELECT f.id,f.menteeid,f.star,f.comment from feedback f, feedbackanswer fa,answer a, mentorcoderequest mcq \n"
+                + "where f.id=fa.feedbackid  and fa.answerid=a.id and a.mentorcoderequestid=mcq.id\n"
+                + "AND mcq.coderequestid=? AND mcq.mentorid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,requestid);
+            ps.setInt(2,mentorid);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int menteeid=rs.getInt("menteeid");
+                int star=rs.getInt("star");
+                String comment=rs.getString("comment");
+                return new Feedback(id, menteeid, star, comment);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }

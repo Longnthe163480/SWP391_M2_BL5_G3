@@ -88,6 +88,14 @@
         <servlet-name>EditFeedback</servlet-name>
         <servlet-class>controller.EditFeedback</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewDetailAnswer</servlet-name>
+        <servlet-class>controller.ViewDetailAnswer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAnswer</servlet-name>
+        <servlet-class>controller.UpdateAnswer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -175,6 +183,14 @@
     <servlet-mapping>
         <servlet-name>EditFeedback</servlet-name>
         <url-pattern>/EditFeedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewDetailAnswer</servlet-name>
+        <url-pattern>/ViewDetailAnswer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAnswer</servlet-name>
+        <url-pattern>/UpdateAnswer</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>

@@ -341,4 +341,15 @@ public class MentorDAO extends DBContext {
         }
         return list;
     }
+
+    public void updateAnswer(int aid, String content){
+        query = "UPDATE answer SET content=? WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, content);
+            ps.setInt(2, aid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
 }
