@@ -12,6 +12,8 @@ import entity.HireRelationship;
 import entity.HireRequest;
 import entity.HireRequestlist;
 import entity.Mentee;
+import entity.Mentor;
+import entity.Skill;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -396,5 +398,53 @@ public class MenteeDAO extends DBContext {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public List<Mentor> getMentorOfRequest(int rid) {
+        List<Mentor> list = new ArrayList<>();
+        query = "SELECT m.id,m.accountid,m.name,m.address,m.phone,m.birthday,m.sex\n"
+                + ",m.introduce,m.achievement,m.avatar,m.costHire\n"
+                + "FROM coderequest c, mentor m, mentorcoderequest mc\n"
+                + "WHERE c.id=mc.coderequestid AND m.id=mc.mentorid AND c.id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, rid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                java.sql.Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String achievement = rs.getString("achievement");
+                String avatar = rs.getString("avatar");
+                float costHire = rs.getFloat("costHire");
+                list.add(new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+ public List<Skill> getSkillARequest(int rid) {
+        List<Skill> skill = new ArrayList<>();
+        query = "SELECT s.id,s.name\n"
+                + "FROM coderequest c, Skill s, coderequestskill ms\n"
+                + "WHERE c.id=ms.coderequestid AND s.id=ms.skillid AND c.id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, rid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                skill.add(new Skill(id, name));
+            }
+        } catch (Exception e) {
+        }
+        return skill;
     }
 }

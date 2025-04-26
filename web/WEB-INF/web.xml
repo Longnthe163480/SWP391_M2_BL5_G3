@@ -96,6 +96,10 @@
         <servlet-name>UpdateAnswer</servlet-name>
         <servlet-class>controller.UpdateAnswer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewRequestDetail</servlet-name>
+        <servlet-class>controller.ViewRequestDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -191,6 +195,10 @@
     <servlet-mapping>
         <servlet-name>UpdateAnswer</servlet-name>
         <url-pattern>/UpdateAnswer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRequestDetail</servlet-name>
+        <url-pattern>/ViewRequestDetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>

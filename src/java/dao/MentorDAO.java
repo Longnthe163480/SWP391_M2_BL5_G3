@@ -352,4 +352,23 @@ public class MentorDAO extends DBContext {
         } catch (Exception e) {
         }
     }
+
+    public Answer getAnswer(int mentorid,int requestid){
+        query = "SELECT a.id,a.mentorcoderequestid,a.content FROM answer a, mentorcoderequest mc \n"
+                + "WHERE a.mentorcoderequestid=mc.id AND mc.mentorid=? AND mc.coderequestid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,mentorid);
+            ps.setInt(2,requestid);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int mcrid=rs.getInt("mentorcoderequestid");
+                String content=rs.getString("content");
+                return new Answer(id, mcrid, content);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }
