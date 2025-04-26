@@ -5,6 +5,7 @@
 package dao;
 
 import dbcontext.DBContext;
+import entity.Account;
 import entity.Answer;
 import entity.CodeRequest;
 import entity.Feedback;
@@ -446,5 +447,51 @@ public class MenteeDAO extends DBContext {
         } catch (Exception e) {
         }
         return skill;
+    }
+
+   public Account checkEmail(String email) {
+        query = "SELECT * FROM Account WHERE email=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String accname = rs.getString("accountname");
+                String pass = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String emails = rs.getString("email");
+                return new Account(id, accname, pass, roleid, emails);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void updateEmailMenteeProfile(int accid, String email) {
+        query = "UPDATE Account SET email=? WHERE id=?\n";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            ps.setInt(2, accid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+     public void updateMorMenteeProfile(int menteeid, String name, String sex, String address, String phone, java.sql.Date birth) {
+        query = " UPDATE Mentee SET name=?, sex=?, address=?, phone=?, birthday=?\n"
+                + "WHERE id=?;";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, sex);
+            ps.setString(3, address);
+            ps.setString(4, phone);
+            ps.setDate(5, birth);
+            ps.setInt(6, menteeid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
     }
 }
