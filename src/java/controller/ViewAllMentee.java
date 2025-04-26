@@ -5,15 +5,17 @@
 package controller;
 
 import dao.*;
+import entity.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
-public class CreateAdminAccount extends HttpServlet {
+public class ViewAllMentee extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,7 +29,24 @@ public class CreateAdminAccount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        String index=request.getParameter("index");
+        if(index==null) index="1";
+        int indexp=Integer.parseInt(index);
+        
+        
+        AccountDAO dao=new AccountDAO();
+        List<Mentee> list=dao.pagingMentee(indexp);
+        
+        
+        int total=dao.getTotalMentee();
+        int end=total/3;
+        if(total%3!=0) end++;
+        
+        
+        
+        request.setAttribute("endpage", end);
+        request.setAttribute("allMentee", list);
+        request.getRequestDispatcher("MenteeList.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -54,33 +73,10 @@ public class CreateAdminAccount extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    processRequest(request, response);
-    
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
-    String confirmpassword = request.getParameter("confirmpassword");
-    String email = request.getParameter("email");
-    
-    AccountDAO dao = new AccountDAO();
-    
-    if (email == null) {
-        email = "";
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
-    
-    if (!password.equals(confirmpassword)) {
-        request.setAttribute("error", "Password and ConfirmPassword don't match");
-        request.getRequestDispatcher("NewMentorAccount.jsp").forward(request, response);
-    } else if (dao.checkMentorAccount(username) == false) {
-        request.setAttribute("error", "Username or Email already exists");
-        request.getRequestDispatcher("NewMentorAccount.jsp").forward(request, response);
-    } else {
-        dao.insertMentorAccount(username, password, email);
-        request.setAttribute("done", "Create mentor account success");
-        request.getRequestDispatcher("NewMentorAccount.jsp").forward(request, response);
-    }
-}
 
     /**
      * Returns a short description of the servlet.

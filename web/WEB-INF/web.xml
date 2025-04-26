@@ -108,6 +108,14 @@
         <servlet-name>SearchRequest</servlet-name>
         <servlet-class>controller.SearchRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewAllMentee</servlet-name>
+        <servlet-class>controller.ViewAllMentee</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchMentee</servlet-name>
+        <servlet-class>controller.SearchMentee</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -215,6 +223,14 @@
     <servlet-mapping>
         <servlet-name>SearchRequest</servlet-name>
         <url-pattern>/SearchRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewAllMentee</servlet-name>
+        <url-pattern>/ViewAllMentee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchMentee</servlet-name>
+        <url-pattern>/SearchMentee</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>

@@ -6,6 +6,7 @@ package dao;
 
 import dbcontext.DBContext;
 import entity.Account;
+import entity.Mentee;
 import entity.Role;
 import java.util.ArrayList;
 import java.util.List;
@@ -192,8 +193,8 @@ public class AccountDAO extends DBContext {
         return list;
     }
 
-    public void insertadminAccount(String username,String password, String email){
-        query = "INSERT INTO Account VALUES (?,?,3,?)";
+    public void insertMentorAccount(String username,String password, String email){
+        query = "INSERT INTO Account VALUES (?,?,2,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1,username);
@@ -204,7 +205,7 @@ public class AccountDAO extends DBContext {
         }
     }
     
-    public boolean checkadminAccount(String username){
+    public boolean checkMentorAccount(String username){
         Account account = null;
         query = "SELECT * FROM Account WHERE accountname=? ";
         try {
@@ -223,6 +224,73 @@ public class AccountDAO extends DBContext {
         }
         if(account==null) return true;
         else return false;
+    }
+
+  public List<Mentee> pagingMentee(int index) {
+        List<Mentee> list = new ArrayList<>();
+        query = "SELECT * FROM Mentee\n"
+                + "ORDER BY id\n"
+                + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, (index - 1) * 3);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String mentorname = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                java.sql.Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String avatar = rs.getString("avatar");
+                list.add(new Mentee(id, accountid, mentorname, address, phone, birthday, sex, introduce, avatar));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
+    public int getTotalMentee(){
+        query = "SELECT COUNT(*) count FROM Mentee";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+    
+    public List<Mentee> searchsomeMentee(String name, int index) {
+        List<Mentee> list = new ArrayList<>();
+        query = "SELECT * FROM Mentee m WHERE m.name LIKE ?\n"
+                + "ORDER BY id\n"
+                + "OFFSET ? ROWS FETCH NEXT 3 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, "%" + name + "%");
+            ps.setInt(2, (index - 1) * 3);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String mentorname = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                java.sql.Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String avatar = rs.getString("avatar");
+                list.add(new Mentee(id, accountid, mentorname, address, phone, birthday, sex, introduce, avatar));
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
     
 }
