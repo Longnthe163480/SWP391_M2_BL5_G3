@@ -6,6 +6,7 @@ package dao;
 
 import dbcontext.DBContext;
 import entity.CodeRequest;
+import entity.Feedback;
 import entity.HireRelationship;
 import entity.HireRequest;
 import entity.HireRequestlist;
@@ -267,5 +268,73 @@ public class MenteeDAO extends DBContext {
         }
     }
     
+    public void createFeedback(int id,int star,String comment){
+        query = "INSERT INTO feedback VALUES(?,?,?) ";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,id);
+            ps.setInt(2,star);
+            ps.setString(3,comment);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
     
+    public Feedback getfeedbackadd(){
+        query ="SELECT TOP 1 * FROM feedback ORDER BY id DESC";
+        try {
+            ps = connection.prepareStatement(query);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int menteeid=rs.getInt("menteeid");
+                int star=rs.getInt("star");
+                String comment=rs.getString("comment");
+                return new Feedback(id, menteeid, star, comment);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    } 
+    
+    public void createFeedbackAnswer(int fid,int aid){
+        query = "INSERT INTO feedbackanswer VALUES(?,?) ";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,fid);
+            ps.setInt(2,aid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+    public Feedback getfeedbackbyid(int fid){
+        query = "SELECT f.id,f.menteeid,f.star,f.comment from feedback f WHERE f.id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,fid);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                int id=rs.getInt("id");
+                int menteeid=rs.getInt("menteeid");
+                int star=rs.getInt("star");
+                String comment=rs.getString("comment");
+                return new Feedback(id, menteeid, star, comment);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }    
+    
+    public void updateFeedback(int id,int star,String comment){
+        query = "UPDATE feedback SET star=?, comment=? WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1,star);
+            ps.setString(2,comment);
+            ps.setInt(3,id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    } 
 }
