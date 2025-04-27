@@ -78,22 +78,31 @@ public class ResetPassword extends HttpServlet {
         boolean emailExists = accountDAO.checkExistedEmail(email);
         
         if (emailExists) {
-            String emailType ="forgotpass";           
-            //Generate Temp Password and store it in session
-            String generatedPass = passUtil.generatePassword();
-            session.setAttribute("generatedPass", generatedPass);
-            //store generatedPassTimestamp in session for checking expired
-            long currentTime = System.currentTimeMillis();
-            session.setAttribute("generatedPassTimestamp", currentTime);
-            System.out.println("email: "+ email);
-            //Send email
-            executorService.submit(() -> emailUtil.sendEmail(email, emailType, generatedPass));
+            String emailType = "forgotpass";
+            // Generate temporary password
+            String tempPassword = passUtil.generatePassword();
             
-            //Set Attribute and redirect to page
-            request.setAttribute("emailExisted", emailExists);
+            // Update password in database
+            boolean updated = accountDAO.updateTempPassword(email, tempPassword);
+            
+            if (updated) {
+                // Store password and timestamp in session
+                session.setAttribute("generatedPass", tempPassword);
+                session.setAttribute("generatedPassTimestamp", System.currentTimeMillis());
+                
+                // Send email asynchronously
+                executorService.submit(() -> emailUtil.sendEmail(email, emailType, tempPassword));
+            
+            // Redirect to OTP verification
+                request.setAttribute("emailExisted", true);
             request.getRequestDispatcher("ResetPasswordOTP.jsp").forward(request, response);
-        } else {
-            
+            } else {
+                // Handle database error
+                request.setAttribute("err", "Unable to reset password. Please try again.");
+                request.setAttribute("emailExisted", email);
+                request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+            }
+        } else { 
             //Send err message back to forgotPassword,jsp
             request.setAttribute("err", "Email not found. Please enter again");
             request.setAttribute("emailExisted", email);

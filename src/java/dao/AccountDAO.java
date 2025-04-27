@@ -308,4 +308,17 @@ public class AccountDAO extends DBContext {
         return false;
     }
     
+    public boolean updateTempPassword(String email, String temporaryPassword) {
+        query = "UPDATE Account SET password = ? WHERE email = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, temporaryPassword);
+            ps.setString(2, email);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            System.out.println("Error updating temporary password: " + e.getMessage());
+            return false;
+        }
+    }
 }
