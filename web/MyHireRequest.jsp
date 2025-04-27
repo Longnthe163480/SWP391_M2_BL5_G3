@@ -81,9 +81,10 @@
                                      <th>Status</th>
                                      <th>Edit</th>
                                  </tr>
+                                 <c:set var="i" value="1" />
                                  <c:forEach items="${hirerequest}" var="c">
                                  <tr>
-                                     <td>${c.id}</td>
+                                     <td>${i}</td>
                                      <td>${c.mentorname}</td>
                                      <td>${c.title}</td>
                                      <td>${c.content}</td>
@@ -94,6 +95,7 @@
                                          </form>
                                      </td>
                                  </tr>
+                                 <c:set var="i" value="${i+1}" />
                                  </c:forEach>
                              </table>
                          </div>
