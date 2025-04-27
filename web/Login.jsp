@@ -67,7 +67,7 @@
                                 <label for="login-check">Remember me</label>
                             </div>
                             <div class="two">
-                                <label><a href="forgot">Forgot password?</a></label>
+                                <label><a href="ResetPassword">Forgot password?</a></label>
                             </div>
                         </div>
                     </form>

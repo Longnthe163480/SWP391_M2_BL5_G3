@@ -8,6 +8,8 @@ import dbcontext.DBContext;
 import entity.Account;
 import entity.Mentee;
 import entity.Role;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -291,6 +293,19 @@ public class AccountDAO extends DBContext {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public boolean checkExistedEmail(String email) {
+        String sql = "select email from account where email = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            System.out.println("checkExistedEmail: " + e.getMessage());
+        }
+        return false;
     }
     
 }
