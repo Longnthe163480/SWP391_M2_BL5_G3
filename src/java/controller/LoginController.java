@@ -85,7 +85,7 @@ public class LoginController extends HttpServlet {
                     session.setAttribute("listallskill", listskill);
                 }
                 session.setAttribute("account", acc);
-                response.sendRedirect("ViewAllMentor");
+                response.sendRedirect("ViewTop3Mentor");
             }
         } catch (Exception e) {
             request.setAttribute("err", "Đã xảy ra lỗi. Vui lòng thử lại sau.");
