@@ -619,4 +619,32 @@ public List<Job> getJobMentor(int accountId) {
         }
     }
 
+    public void addSkillAdmin(String name) {
+        String sql = "INSERT INTO Skill(name) VALUES(?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void updateSkillAdmin(int id, String name) {
+        String sql = "UPDATE Skill SET name=? WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void deleteSkillAdmin(int id) {
+        String sql = "DELETE FROM Skill WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
 }
