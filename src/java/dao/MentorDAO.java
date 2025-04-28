@@ -488,4 +488,135 @@ public List<Job> getJobMentor(int accountId) {
         } catch (Exception e) {
         }
     }
+
+    public List<Skill> getAllSkills() {
+        List<Skill> list = new ArrayList<>();
+        String sql = "SELECT * FROM Skill";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill();
+                s.setId(rs.getInt("id"));
+                s.setName(rs.getString("name"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public List<Job> getAllJobs() {
+        List<Job> list = new ArrayList<>();
+        String sql = "SELECT * FROM Job";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Job j = new Job();
+                j.setId(rs.getInt("id"));
+                j.setJobname(rs.getString("jobname"));
+                list.add(j);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public List<Skill> getAvailableSkills(int mentorid) {
+        List<Skill> list = new ArrayList<>();
+        String sql = "SELECT s.* FROM Skill s "
+                + "WHERE s.id NOT IN ("
+                + "    SELECT ms.skillid FROM MentorSkill ms "
+                + "    JOIN Mentor m ON ms.mentorid = m.id "
+                + "    WHERE m.accountid = ?"
+                + ")";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Skill s = new Skill();
+                s.setId(rs.getInt("id"));
+                s.setName(rs.getString("name"));
+                list.add(s);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public List<Job> getAvailableJobs(int mentorid) {
+        List<Job> list = new ArrayList<>();
+        String sql = "SELECT j.* FROM Job j "
+                + "WHERE j.id NOT IN ("
+                + "    SELECT mj.jobid FROM MentorJob mj "
+                + "    JOIN Mentor m ON mj.mentorid = m.id "
+                + "    WHERE m.accountid = ?"
+                + ")";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Job j = new Job();
+                j.setId(rs.getInt("id"));
+                j.setJobname(rs.getString("jobname"));
+                list.add(j);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public void removeAllSkills(int mentorid) {
+        String sql = "DELETE FROM MentorSkill WHERE mentorid = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void addSkill(int mentorid, int skillid) {
+        String sql = "INSERT INTO MentorSkill (mentorid, skillid) VALUES (?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            st.setInt(2, skillid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void removeAllJobs(int mentorid) {
+        String sql = "DELETE FROM MentorJob WHERE mentorid = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void addJob(int mentorid, int jobid) {
+        String sql = "INSERT INTO MentorJob (mentorid, jobid) VALUES (?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, mentorid);
+            st.setInt(2, jobid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
 }
