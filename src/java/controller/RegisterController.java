@@ -1,6 +1,7 @@
 package controller;
 
 import dao.*;
+import util.*;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -50,25 +51,42 @@ public class RegisterController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
-        String confirmpassword=request.getParameter("confirmpass");
-        String email=request.getParameter("email");
-        String role=request.getParameter("role");
-        int roleid = role.equals("Mentor") ? 2 : 1;
-        AccountDAO dao=new AccountDAO();
-        if(!password.equals(confirmpassword)){
-            request.setAttribute("errorMsg", "Password and ConfirmPassword doesn't same");
-            request.getRequestDispatcher("Register.jsp").forward(request, response);
-        }else if(dao.checkAccount(username, email)==false){
-            request.setAttribute("errorMsg", "Username , Email is exist");
-            request.getRequestDispatcher("Register.jsp").forward(request, response);
-        }else{
-            dao.insertAccount(username, password, roleid, email);
-            response.sendRedirect("Login.jsp?msg=success");
+        // Lấy dữ liệu từ form
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String confirmpassword = request.getParameter("confirmpass");
+        String email = request.getParameter("email");
+        String role = request.getParameter("role");
+        String fullname = request.getParameter("fullname");
+
+        // Khởi tạo Validation
+        Validation validation = new Validation();
+        PasswordUtil passwordUtil = new PasswordUtil();
+
+        // Kiểm tra input sử dụng Validation
+        String errorMsg = validation.validateSignUpInput(username, password, confirmpassword, email);
+        
+        if (errorMsg.isEmpty() && (fullname == null || !validation.validateFullname(fullname))) {
+            errorMsg = "Fullname is invalid. It must start with a letter and contain only letters, spaces, or dots.";
         }
         
-        
+        if (!errorMsg.isEmpty()) {
+            // Nếu có lỗi từ Validation, gửi thông báo lỗi về Register.jsp
+            request.setAttribute("errorMsg", errorMsg);
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
+        } else {
+            String hashedPassword = passwordUtil.hashPasswordMD5(password);
+            if (hashedPassword == null) {
+                request.setAttribute("errorMsg", "Error processing password. Please try again.");
+                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                return;
+            }
+            // Nếu không có lỗi, xác định roleid và chèn tài khoản
+            int roleid = role.equals("Mentor") ? 2 : 1;
+            AccountDAO dao = new AccountDAO();
+            dao.insertAccount(username, hashedPassword, roleid, email);
+            response.sendRedirect("Login.jsp?msg=success");
+        }
     }
 
     /**

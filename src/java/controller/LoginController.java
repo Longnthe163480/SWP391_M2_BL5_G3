@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import util.PasswordUtil;
 
 public class LoginController extends HttpServlet {
 
@@ -59,9 +60,23 @@ public class LoginController extends HttpServlet {
         AccountDAO dao = new AccountDAO();
         MentorDAO mentordao = new MentorDAO();
         MenteeDAO menteedao = new MenteeDAO();
+        PasswordUtil passwordUtil = new PasswordUtil();
         
         try {
-            Account acc = dao.getAccount(user, pass);
+            // Kiểm tra trạng thái forgoted
+            Boolean forgotedStatus = dao.getForgotedStatusByUsername(user);
+            if (forgotedStatus == null) {
+                request.setAttribute("err", "Tài khoản không tồn tại");
+                request.setAttribute("username", user);
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
+                return;
+            }
+
+            // Xử lý mật khẩu dựa trên forgoted
+            String passwordToCheck = forgotedStatus ? pass : passwordUtil.hashPasswordMD5(pass);
+
+            // Kiểm tra tài khoản với mật khẩu đã xử lý
+            Account acc = dao.getAccount(user, passwordToCheck);
             if (acc == null) {
                 request.setAttribute("err", "Sai tên đăng nhập hoặc mật khẩu");
                 request.setAttribute("username", user); // Giữ lại username

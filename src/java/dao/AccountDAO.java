@@ -150,13 +150,14 @@ public class AccountDAO extends DBContext {
     }
 
     public void insertAccount(String username,String password,int roleid, String email){
-        query = "INSERT INTO Account VALUES (?,?,?,?)";
+        query = "INSERT INTO Account VALUES (?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1,username);
             ps.setString(2,password);
             ps.setInt(3,roleid);
             ps.setString(4,email);
+            ps.setBoolean(5, false);
             ps.executeUpdate();
         } catch (Exception e) {
         }
@@ -310,18 +311,90 @@ public class AccountDAO extends DBContext {
     }
     
     public boolean updateTempPassword(String email, String temporaryPassword) {
-        query = "UPDATE Account SET password = ? WHERE email = ?";
+        String query = "UPDATE Account SET password = ?, forgoted = ? WHERE email = ?";
+    try {
+        ps = connection.prepareStatement(query);
+        ps.setString(1, temporaryPassword); // Lưu mật khẩu dạng plain text
+        ps.setBoolean(2, true); // Đặt forgoted = 1
+        ps.setString(3, email);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (Exception e) {
+        System.err.println("Lỗi trong updateTempPasswordWithForgoted: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+    }
+
+    public boolean checkExistedUserWithUsername(String username) {
+        String sql = "SELECT * FROM account WHERE username = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            System.out.println("checkExistedUserWithUsername: " + e.getMessage());
+        }
+        return false;
+    }  
+    
+    public Account getAccountByUsername(String username) {
+        Account account = null;
+        query = "SELECT * FROM Account WHERE accountname=?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, temporaryPassword);
-            ps.setString(2, email);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ps.setString(1,username);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id=rs.getInt("id");                
+                String name=rs.getString("accountname");
+                String pass=rs.getString("password");
+                int roleid=rs.getInt("roleid");
+                String email=rs.getString("email");
+                account=new Account(id, name, pass, roleid, email);
+            }
         } catch (Exception e) {
-            System.out.println("Error updating temporary password: " + e.getMessage());
-            return false;
         }
+        return account;
     }
+
+    public Account getAccountByEmail(String email) {
+        Account account = null;
+        query = "SELECT * FROM Account WHERE email = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("accountname");
+                String pass = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String emailFound = rs.getString("email");
+                account = new Account(id, name, pass, roleid, emailFound);
+            }
+        } catch (Exception e) {
+            System.out.println("Error at getAccountByEmail: " + e.getMessage());
+        }
+        return account;
+    }
+    
+    public Boolean getForgotedStatusByUsername(String username) {
+    String query = "SELECT forgoted FROM Account WHERE accountname = ?";
+    try {
+        ps = connection.prepareStatement(query);
+        ps.setString(1, username);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getBoolean("forgoted");
+        }
+    } catch (Exception e) {
+        System.err.println("Lỗi trong getForgotedStatusByUsername: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return null; // Trả về null nếu không tìm thấy tài khoản hoặc có lỗi
+}
 
     public void addSkillAdmin(String name) {
         String sql = "INSERT INTO Skill(name) VALUES(?)";
