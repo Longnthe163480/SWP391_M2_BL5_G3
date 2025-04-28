@@ -48,7 +48,7 @@ public class ViewPostDetail extends HttpServlet {
                 response.sendRedirect("ViewAllPost");
                 return;
             }
-
+            
             // Get comments for this post
             List<Comment> comments = postDAO.getCommentsByPostId(postId);
             // map accountId -> accountName
@@ -77,7 +77,7 @@ public class ViewPostDetail extends HttpServlet {
                     accountNameMap.put(accId, name);
                 }
             }
-            // Đảm bảo tên người tạo post luôn có trong map
+            // Name Create Post
             if (!accountNameMap.containsKey(post.getAccountId())) {
                 String name = "Unknown";
                 try {
@@ -103,13 +103,16 @@ public class ViewPostDetail extends HttpServlet {
             if (accObj != null && accObj instanceof entity.Account) {
                 int accId = ((entity.Account) accObj).getId();
                 hasLiked = postDAO.hasLiked(postId, accId);
-            }            
+            }
+            // Get Image 
+            List<PostImage> postImages = postDAO.getPostImages(postId);
+            request.setAttribute("postImages", postImages);
             // Set attributes for JSP
             request.setAttribute("post", post);
             request.setAttribute("comments", comments);
             request.setAttribute("accountNameMap", accountNameMap);
             request.setAttribute("likeCount", likeCount);
-            request.setAttribute("hasLiked", hasLiked);            
+            request.setAttribute("hasLiked", hasLiked);
             // Forward to JSP
             request.getRequestDispatcher("ViewPostDetail.jsp").forward(request, response);
         } catch (Exception e) {
