@@ -88,6 +88,13 @@
                                     <p class="card-text">${comment.content}</p>
                                     <small class="text-muted">
                                         By ${accountNameMap[comment.accountId]} on ${comment.createdDate}
+                                        <c:if test="${sessionScope.account != null && sessionScope.account.id == comment.accountId}">
+                                            <form action="DeleteComment" method="post" style="display:inline; margin-left: 8px;">
+                                                <input type="hidden" name="commentId" value="${comment.id}" />
+                                                <input type="hidden" name="postId" value="${post.id}" />
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
+                                            </form>
+                                        </c:if>
                                     </small>
                                 </div>
                             </div>

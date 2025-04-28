@@ -268,4 +268,48 @@ public class PostDAO extends DBContext{
         } catch (Exception e) {
         }
     }
+    
+    public void deleteComment(int commentId) {
+        query = "DELETE FROM Comment WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, commentId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
+    public void deletePostAndRelated(int postId) {
+        // Xóa ảnh liên quan
+        String query1 = "DELETE FROM PostImage WHERE postId=?";
+        try {
+            ps = connection.prepareStatement(query1);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+
+        // Xóa comment liên quan
+        String query2 = "DELETE FROM Comment WHERE postId=?";
+        try {
+            ps = connection.prepareStatement(query2);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+
+        // Xóa like liên quan
+        String query3 = "DELETE FROM [Like] WHERE postId=?";
+        try {
+            ps = connection.prepareStatement(query3);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+
+        // Cuối cùng xóa post
+        String query4 = "DELETE FROM Post WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query4);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+    }
 }
