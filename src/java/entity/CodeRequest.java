@@ -16,6 +16,7 @@ public class CodeRequest {
     private String content;
     private Date deadline;
     private int menteeid;
+    private Mentee mentee;
 
     public CodeRequest() {
     }
@@ -66,6 +67,14 @@ public class CodeRequest {
 
     public void setMenteeid(int menteeid) {
         this.menteeid = menteeid;
+    }
+
+    public Mentee getMentee() {
+        return mentee;
+    }
+
+    public void setMentee(Mentee mentee) {
+        this.mentee = mentee;
     }
     
 }

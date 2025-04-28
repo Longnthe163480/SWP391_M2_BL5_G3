@@ -4,21 +4,20 @@
  */
 package controller;
 
-import dao.*;
-import entity.*;
+import dao.MenteeDAO;
+import dao.PostDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.*;
 
 /**
  *
  * @author legen
  */
-public class ViewAllHireRequest extends HttpServlet {
+public class AdminDashboard extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,50 +31,18 @@ public class ViewAllHireRequest extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String index = request.getParameter("index");
-        String menteeid = request.getParameter("menteeid");
-        
-        // Handle admin viewing all requests
-        if (menteeid == null) {
-            if (index == null) {
-                index = "1";
-            }
-            int indexp = Integer.parseInt(index);
-
-            MenteeDAO dao = new MenteeDAO();
-            List<HireRequestlist> list = dao.getAllHireRequests(indexp);
-            
-            int total = dao.getTotalAllHireRequests();
-            int end = total / 4;
-            if (total % 4 != 0) {
-                end++;
-            }
-
-            request.setAttribute("endpage", end);
-            request.setAttribute("hirerequest", list);
-            request.getRequestDispatcher("MyHireRequest.jsp").forward(request, response);
-            return;
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AdminDashboard</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AdminDashboard at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        // Handle mentee viewing their own requests
-        int id = Integer.parseInt(menteeid);
-        if (index == null) {
-            index = "1";
-        }
-        int indexp = Integer.parseInt(index);
-        
-        MenteeDAO dao = new MenteeDAO();
-        List<HireRequestlist> list = dao.pagingMenteeHireRequest(id, indexp);
-
-        int total = dao.getTotalMenteeHireRequest(id);
-        int end = total / 4;
-        if (total % 4 != 0) {
-            end++;
-        }
-
-        request.setAttribute("endpage", end);
-        request.setAttribute("hirerequest", list);
-        request.getRequestDispatcher("MyHireRequest.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -90,7 +57,17 @@ public class ViewAllHireRequest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Sử dụng DAO để lấy số liệu
+        MenteeDAO menteeDAO = new MenteeDAO();
+        int totalRequest = menteeDAO.countAllRequest();
+        int totalHireRequest = menteeDAO.countAllHireRequest();
+        PostDAO postDAO = new PostDAO();
+        int totalPost = postDAO.getTotalPosts();
+
+        request.setAttribute("totalRequest", totalRequest);
+        request.setAttribute("totalHireRequest", totalHireRequest);
+        request.setAttribute("totalPost", totalPost);
+        request.getRequestDispatcher("AdminDashboard.jsp").forward(request, response);
     }
 
     /**
@@ -104,7 +81,7 @@ public class ViewAllHireRequest extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**
@@ -114,7 +91,7 @@ public class ViewAllHireRequest extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Admin Dashboard Controller";
     }// </editor-fold>
 
 }

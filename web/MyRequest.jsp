@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>My Request</title>
+        <title>Request List</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -181,6 +181,72 @@
                 </ul>
                 <button onclick='window.history.go(-1);' class="btn btn-outline-primary btn-lg" style="position: absolute;bottom: 20px;left: 20px;">Back</button>
 
+            </nav>
+            <jsp:include page="guest/Footer.jsp" />
+        </c:if>
+        
+        <c:if test="${sessionScope.account.roleid==3}">
+            <jsp:include page="guest/Header.jsp" />
+            <main id="main" style="position: relative">
+                <section class="breadcrumbs">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2>All Requests</h2>
+                            <ol>
+                                <li><a href="AdminDashboard.jsp">Dashboard</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+                <div class="container-fluid h-custom">
+                    <div class="row d-flex justify-content-start align-items-center h-100">
+                        <table class="table table-striped table-hover" style="margin: 50px; width:93%">
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Deadline</th>
+                                <th>Mentee</th>
+                            </tr>
+                            <c:forEach items="${coderequest}" var="c">
+                                <tr>
+                                    <td>${c.id}</td>
+                                    <td><a href="ViewRequestDetail?reid=${c.id}">${c.title}</a></td>
+                                    <td>${c.content}</td>
+                                    <td>${c.deadline}</td>
+                                    <td>
+                                        <c:set var="mentee" value="${c.mentee}" />
+                                        ${mentee.name}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
+            </main>
+            <nav aria-label="Page navigation example" style="position: relative">
+                <ul class="pagination" style="display: flex;justify-content: center;align-items: center;">
+                    <c:if test="${tag>1}">
+                        <li class="page-item">
+                            <a class="page-link" href="ViewAllRequest?index=${tag-1}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    </c:if>               
+                    <c:forEach begin="1" end="${endpage}" var="i">
+                        <li class="page-item"><a class="page-link" href="ViewAllRequest?index=${i}">${i}</a></li>
+                    </c:forEach>
+                    <c:if test="${tag<enpage}">
+                        <li class="page-item">
+                            <a class="page-link" href="ViewAllRequest?index=${tag+1}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+                <button onclick='window.history.go(-1);' class="btn btn-outline-primary btn-lg" style="position: absolute;bottom: 20px;left: 20px;">Back</button>
             </nav>
             <jsp:include page="guest/Footer.jsp" />
         </c:if>
