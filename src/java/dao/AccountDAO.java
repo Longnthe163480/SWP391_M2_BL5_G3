@@ -578,4 +578,38 @@ public class AccountDAO extends DBContext {
         }
         return account;
     }
+
+    // Lấy danh sách tất cả account mentee (roleid=1)
+    public List<Account> getAllMenteeAccounts() {
+        List<Account> list = new ArrayList<>();
+        try {
+            query = "SELECT * FROM Account WHERE roleid=1";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String accountname = rs.getString("accountname");
+                String password = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String email = rs.getString("email");
+                list.add(new Account(id, accountname, password, roleid, email));
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    // Cập nhật role của account sang mentor
+    public void updateRoleToMentor(int accountId) {
+        try {
+            query = "UPDATE Account SET roleid = 2 WHERE id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+        }
+    }
 }
