@@ -11,6 +11,7 @@ public class Account {
     private String password;
     private int roleid;
     private String email;
+    private boolean forgoted;
 
     public Account() {
     }
@@ -21,6 +22,15 @@ public class Account {
         this.password = password;
         this.roleid = roleid;
         this.email = email;
+    }
+
+    public Account(int id, String accountname, String password, int roleid, String email, boolean forgoted) {
+        this.id = id;
+        this.accountname = accountname;
+        this.password = password;
+        this.roleid = roleid;
+        this.email = email;
+        this.forgoted = forgoted;
     }
 
     public int getId() {
@@ -62,5 +72,15 @@ public class Account {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean isForgoted() {
+        return forgoted;
+    }
+
+    public void setForgoted(boolean forgoted) {
+        this.forgoted = forgoted;
+    }
+    
+    
     
 }

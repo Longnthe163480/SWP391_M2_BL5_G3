@@ -55,7 +55,7 @@ public class EmailUtil {
 
             if (type.equals("forgotpass")) {
                 //Genpass
-                generatedValue = passUtil.generatePassword(); 
+                //generatedValue = passUtil.generatePassword(); 
                 //Subject
                 msg.setSubject("Request to reset password ");
 

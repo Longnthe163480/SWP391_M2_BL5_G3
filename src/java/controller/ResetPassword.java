@@ -1,3 +1,4 @@
+
 package controller;
 import dao.AccountDAO;
 import java.io.IOException;
@@ -63,67 +64,67 @@ public class ResetPassword extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        AccountDAO accountDAO = new AccountDAO();
+            throws ServletException, IOException {
+        AccountDAO userDAO = new AccountDAO();
         EmailUtil emailUtil = new EmailUtil();
         PasswordUtil passUtil = new PasswordUtil();
-        
-        //Get session
+
+        // Get session
         HttpSession session = request.getSession();
-        
-        //Get parameter
+
+        // Get parameter
         String email = request.getParameter("email");
-        
-        //Check if email existed
-        boolean emailExists = accountDAO.checkExistedEmail(email);
-        
+
+        // Check if email existed
+        boolean emailExists = userDAO.checkExistedEmail(email);
+
         if (emailExists) {
             String emailType = "forgotpass";
             // Generate temporary password
-            String tempPassword = passUtil.generatePassword();
+            String generatedPass = passUtil.generatePassword();
+            System.out.println("Mat khau tam thoi duoc khoi tao: "+ generatedPass);
             
-            // Update password in database
-            boolean updated = accountDAO.updateTempPassword(email, tempPassword);
-            
+
+            // Update password and forgoted in database
+            boolean updated = userDAO.updateTempPassword(email, generatedPass);
+            System.out.println("Cap nhat mat khau: "+ updated +", Mat khau: "+ generatedPass);
+
             if (updated) {
                 // Store password and timestamp in session
-                session.setAttribute("generatedPass", tempPassword);
+                session.setAttribute("generatedPass", generatedPass); // Lưu plain text
                 session.setAttribute("generatedPassTimestamp", System.currentTimeMillis());
-                
+                System.out.println("Mat khau trong session: " + generatedPass);
+
                 // Send email asynchronously
-                executorService.submit(() -> emailUtil.sendEmail(email, emailType, tempPassword));
-            
-            // Redirect to OTP verification
+                System.out.println("Mat khau duoc gui qua email: " + generatedPass);
+                emailUtil.sendEmail(email, emailType, generatedPass);
+
+                // Redirect to OTP verification
                 request.setAttribute("emailExisted", true);
-            request.getRequestDispatcher("ResetPasswordOTP.jsp").forward(request, response);
+                request.getRequestDispatcher("ResetPasswordOTP.jsp").forward(request, response);
             } else {
-                // Handle database error
-                request.setAttribute("err", "Unable to reset password. Please try again.");
+                // Handle database error or forgoted not 0
+                request.setAttribute("err", "Không thể đặt lại mật khẩu. Vui lòng thử lại.");
                 request.setAttribute("emailExisted", email);
                 request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
             }
-        } else { 
-            //Send err message back to forgotPassword,jsp
-            request.setAttribute("err", "Email not found. Please enter again");
+        } else {
+            // Send error message back to forgotPassword.jsp
+            request.setAttribute("err", "Email không tồn tại. Vui lòng nhập lại.");
             request.setAttribute("emailExisted", email);
             request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
         }
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-    
+        return "Xử lý quên mật khẩu và đặt lại mật khẩu tạm thời";
+    }
+
     @Override
     public void destroy() {
         super.destroy();
         // Shutdown the thread pool when the servlet is destroyed
         executorService.shutdown();
     }
-
 }
