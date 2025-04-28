@@ -519,4 +519,31 @@ public class MenteeDAO extends DBContext {
         }
         return list;
     }
+
+    public Mentee getMenteeById(int id) {
+        query = "SELECT * FROM Mentee WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            System.out.println("Executing query: " + query + " with id=" + id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int menteeId = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                java.sql.Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String avatar = rs.getString("avatar");
+                System.out.println("Found mentee: " + name + ", avatar: " + avatar);
+                return new Mentee(menteeId, accountid, name, address, phone, birthday, sex, introduce, avatar);
+            }
+            System.out.println("No mentee found with id=" + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
