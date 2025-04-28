@@ -182,6 +182,50 @@ public class MentorDAO extends DBContext {
         return job;
     }
     
+    public List<Skill> getSkillMentor(int accountId) {
+    List<Skill> skill = new ArrayList<>();
+    query = "SELECT s.id, s.name " +
+            "FROM mentor m " +
+            "JOIN mentorskill ms ON m.id = ms.mentorid " +
+            "JOIN skill s ON s.id = ms.skillid " +
+            "WHERE m.accountid = ?";
+    try {
+        ps = connection.prepareStatement(query);
+        ps.setInt(1, accountId);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            skill.add(new Skill(id, name));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return skill;
+}
+
+public List<Job> getJobMentor(int accountId) {
+    List<Job> job = new ArrayList<>();
+    query = "SELECT j.id, j.jobname " +
+            "FROM mentor m " +
+            "JOIN mentorjob mj ON m.id = mj.mentorid " +
+            "JOIN job j ON j.id = mj.jobid " +
+            "WHERE m.accountid = ?";
+    try {
+        ps = connection.prepareStatement(query);
+        ps.setInt(1, accountId);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String jobname = rs.getString("jobname");
+            job.add(new Job(id, jobname));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return job;
+}
+
     public float getRateAMentor(int mentorid) {
         query = "WITH t AS(SELECT mc.mentorid id,AVG(CAST (f.star AS FLOAT(2))) averageStar FROM Feedback f, feedbackanswer fa, answer a, mentorcoderequest mc\n"
                 + "WHERE f.id=fa.feedbackid and fa.answerid=a.id and a.mentorcoderequestid=mc.id\n"
