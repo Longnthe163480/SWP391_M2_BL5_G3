@@ -100,12 +100,12 @@
 
                             <!--Username input--> 
                             <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.name}" required>   
+                                <label class="form-label">Name <span class="text-danger">*</span></label>
+                                <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.name}" required pattern="[A-Za-z\s]+" title="Name must contain only letters and spaces">   
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" >Sex</label><br>
-                                <input type="radio" name="sex" value="M" 
+                                <label class="form-label">Sex <span class="text-danger">*</span></label><br>
+                                <input type="radio" name="sex" value="M" required 
                                     <c:if test="${sessionScope.getmentor.sex == 'M'}">checked</c:if>
                                 />Male
                                 <input type="radio" name="sex" value="F" 
@@ -114,20 +114,20 @@
                             </div>
                             <!--Password input--> 
                             <div class="mb-3">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Address <span class="text-danger">*</span></label>
                                 <input name="address" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.address}" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" >Email</label>
-                                <input name="email" type="text" class="form-control form-control-lg" value="${sessionScope.account.email}" required>
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input name="email" type="email" class="form-control form-control-lg" value="${sessionScope.account.email}" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Introduce</label>
-                                <textarea name="introduce" type="text" class="form-control form-control-lg" required>${sessionScope.getmentor.introduce}</textarea>
+                                <label class="form-label">Introduce <span class="text-danger">*</span></label>
+                                <textarea name="introduce" type="text" class="form-control form-control-lg" required minlength="30" title="Introduction must be at least 50 characters">${sessionScope.getmentor.introduce}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Achievement</label>
-                                <textarea name="achievment" rows="4" class="form-control form-control-lg" required>${sessionScope.getmentor.achievement}</textarea>
+                                <label class="form-label">Achievement <span class="text-danger">*</span></label>
+                                <textarea name="achievment" rows="4" class="form-control form-control-lg" required minlength="30" title="Achievement must be at least 50 characters">${sessionScope.getmentor.achievement}</textarea>
                             </div>
                             <div class="text-center text-lg-start mt-4 pt-2 mb-4" style="position: relative">
                                 <button type="submit" class="btn btn-outline-primary btn-lg"style="padding-left: 2.5rem; padding-right: 2.5rem;">
@@ -145,17 +145,17 @@
                                         </div>                                              
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Phone</label>
-                                        <input name="phone" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.phone}" required>
+                                        <label class="form-label">Phone <span class="text-danger">*</span></label>
+                                        <input name="phone" type="tel" class="form-control form-control-lg" value="${sessionScope.getmentor.phone}" required pattern="[0-9]{10,11}" title="Phone number must be 10-11 digits">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Birthday</label>
-                                        <input name="birthday" type="date" class="form-control form-control-lg" value="${sessionScope.getmentor.birthday}" required>
-
+                                        <label class="form-label">Birthday <span class="text-danger">*</span></label>
+                                        <input name="birthday" type="date" class="form-control form-control-lg" value="${sessionScope.getmentor.birthday}" required 
+                                               onchange="validateAge(this)" max="2006-01-01" title="You must be at least 18 years old">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Cost Hire</label>
-                                        <input name="cost" type="text" class="form-control form-control-lg" value="${requestScope.getmentor.cost}" required>
+                                        <label class="form-label">Cost Hire <span class="text-danger">*</span></label>
+                                        <input name="cost" type="number" class="form-control form-control-lg" value="${requestScope.getmentor.cost}" required min="0" step="0.01" title="Cost must be a positive number">
                                     </div>
 
                                     <div class="mb-3">
@@ -277,6 +277,23 @@
                                             option.text = text;
                                             select.appendChild(option);
                                             button.parentElement.remove();
+                                        }
+
+                                        function validateAge(input) {
+                                            const today = new Date();
+                                            const birthDate = new Date(input.value);
+                                            const age = today.getFullYear() - birthDate.getFullYear();
+                                            const monthDiff = today.getMonth() - birthDate.getMonth();
+                                            
+                                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                                                age--;
+                                            }
+                                            
+                                            if (age < 18) {
+                                                input.setCustomValidity('You must be at least 18 years old');
+                                            } else {
+                                                input.setCustomValidity('');
+                                            }
                                         }
                                     </script>
                                 </div>

@@ -28,25 +28,50 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
       </c:if>
       <form action="AdminAddAccount" method="post" class="form-container">
         <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input name="accountname" type="text" class="form-control" required />
+          <label class="form-label"
+            >Username <span class="text-danger">*</span></label
+          >
+          <input
+            name="accountname"
+            type="text"
+            class="form-control"
+            required
+            pattern="[A-Za-z0-9_]+"
+            title="Username must contain only letters, numbers and underscores"
+          />
         </div>
         <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input name="email" type="email" class="form-control" required />
+          <label class="form-label"
+            >Email <span class="text-danger">*</span></label
+          >
+          <input
+            name="email"
+            type="email"
+            class="form-control"
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            title="Please enter a valid email address"
+          />
         </div>
         <div class="mb-3">
-          <label class="form-label">Password</label>
+          <label class="form-label"
+            >Password <span class="text-danger">*</span></label
+          >
           <input
             name="password"
             type="password"
             class="form-control"
             required
+            minlength="6"
+            title="Password must be at least 6 characters"
           />
         </div>
         <div class="mb-3">
-          <label class="form-label">Role</label>
+          <label class="form-label"
+            >Role <span class="text-danger">*</span></label
+          >
           <select name="roleid" class="form-select" required>
+            <option value="">Select a role</option>
             <c:forEach var="role" items="${roleList}">
               <option value="${role.id}">${role.name}</option>
             </c:forEach>
