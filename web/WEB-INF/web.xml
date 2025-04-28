@@ -172,6 +172,14 @@
         <servlet-name>AdminDashboard</servlet-name>
         <servlet-class>controller.AdminDashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewRegisterMentorRequest</servlet-name>
+        <servlet-class>controller.ViewRegisterMentorRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApproveMentorController</servlet-name>
+        <servlet-class>controller.ApproveMentorController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -343,6 +351,14 @@
     <servlet-mapping>
         <servlet-name>AdminDashboard</servlet-name>
         <url-pattern>/AdminDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewRegisterMentorRequest</servlet-name>
+        <url-pattern>/ViewRegisterMentorRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveMentorController</servlet-name>
+        <url-pattern>/ApproveMentorController</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>

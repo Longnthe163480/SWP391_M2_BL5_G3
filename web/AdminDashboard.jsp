@@ -79,7 +79,7 @@
                 <a href="ViewAllPost">
                     <i class="bi bi-file-earmark-text"></i> Total Post <br>
                 </a>
-                <a href="#">
+                <a href="ViewRegisterMentorRequest">
                     <i class="bi bi-person-plus"></i> Request Register Mentor
                 </a>
                 <a href="LogOut">
