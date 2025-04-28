@@ -156,6 +156,14 @@
         <servlet-name>SearchPost</servlet-name>
         <servlet-class>controller.SearchPost</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteComment</servlet-name>
+        <servlet-class>controller.DeleteComment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePost</servlet-name>
+        <servlet-class>controller.DeletePost</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -311,6 +319,14 @@
     <servlet-mapping>
         <servlet-name>SearchPost</servlet-name>
         <url-pattern>/SearchPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteComment</servlet-name>
+        <url-pattern>/DeleteComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePost</servlet-name>
+        <url-pattern>/DeletePost</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
