@@ -120,6 +120,14 @@
         <servlet-name>ResetPassword</servlet-name>
         <servlet-class>controller.ResetPassword</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewMentorProfile</servlet-name>
+        <servlet-class>controller.ViewMentorProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditMentorProfile</servlet-name>
+        <servlet-class>controller.EditMentorProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -239,6 +247,14 @@
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMentorProfile</servlet-name>
+        <url-pattern>/ViewMentorProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditMentorProfile</servlet-name>
+        <url-pattern>/EditMentorProfile</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
