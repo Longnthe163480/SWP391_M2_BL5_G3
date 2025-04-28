@@ -13,6 +13,32 @@
         <title>${post.title}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
+            body {
+                padding-top: 60px; /* Thêm padding-top để tránh bị Header che */
+            }
+            .post-content {
+                white-space: pre-line;
+                padding: 12px 18px;
+                font-size: 1.1rem;
+                line-height: 1.7;
+                text-align: left;
+                background: #fafbfc;
+                border-radius: 6px;
+                margin-bottom: 2rem;
+            }
+            .comment-section {
+                margin-top: 2rem;
+            }
+        </style>
+    </head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>${post.title}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* Thêm padding-top để tránh bị Header che */
+            }
             .post-content {
                 white-space: pre-line;
                 padding: 12px 18px;
@@ -73,6 +99,19 @@
                     <div class="post-content mb-4">
                         ${post.content}
                     </div>
+                    
+                    <!-- Post Images -->
+                    <c:if test="${not empty postImages}">
+                        <div class="post-images mb-4">
+                            <div class="row">
+                                <c:forEach var="image" items="${postImages}">
+                                    <div class="col-md-4 mb-3">
+                                        <img src="${image.imageUrl}" class="img-fluid rounded" alt="Post image">
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:if>
                     
                     <!-- Comments Section -->
                     <div class="comment-section">
