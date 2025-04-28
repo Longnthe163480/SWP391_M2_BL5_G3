@@ -397,4 +397,51 @@ public class MentorDAO extends DBContext {
         }
         return list;
     }
+
+    public Account checkEmail(String email) {
+        query = "SELECT * FROM Account WHERE email=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String accname = rs.getString("accountname");
+                String pass = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String emails = rs.getString("email");
+                return new Account(id, accname, pass, roleid, emails);
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    public void updateEmailMentorProfile(int accid, String email) {
+        query = "UPDATE Account SET email=? WHERE id=?\n";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            ps.setInt(2, accid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    public void updateMorMentorProfile(int mentorid, String name, String sex, String address, String phone, java.sql.Date birth,String introduce,String achievement,float cost) {
+        query = " UPDATE Mentor SET name=?, sex=?, address=?, phone=?, birthday=?,introduce =?,achievement =?,costHire =?\n"
+                + "WHERE id=?;";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, sex);
+            ps.setString(3, address);
+            ps.setString(4, phone);
+            ps.setDate(5, birth);
+            ps.setString(6, introduce);
+            ps.setString(7, achievement);
+            ps.setFloat(8, cost);
+            ps.setInt(9, mentorid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
 }
