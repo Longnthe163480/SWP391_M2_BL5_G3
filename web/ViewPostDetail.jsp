@@ -31,34 +31,18 @@
             }
         </style>
     </head>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>${post.title}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            body {
-                padding-top: 60px; /* Thêm padding-top để tránh bị Header che */
-            }
-            .post-content {
-                white-space: pre-line;
-                padding: 12px 18px;
-                font-size: 1.1rem;
-                line-height: 1.7;
-                text-align: left;
-                background: #fafbfc;
-                border-radius: 6px;
-                margin-bottom: 2rem;
-            }
-            .comment-section {
-                margin-top: 2rem;
-            }
-        </style>
-    </head>
     <body>
         <jsp:include page="guest/Header.jsp"></jsp:include>
-        <div class="container mt-4">
+        <div class="container mt-4 mb-5">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
+                    <!-- Back button -->
+                    <div class="mb-4">
+                        <a href="ViewAllPost" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Posts
+                        </a>
+                    </div>
+                    
                     <!-- Post Title -->
                     <h1 class="mb-4">${post.title}</h1>
                     
