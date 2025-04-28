@@ -50,7 +50,7 @@
                     <div class="container">
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <h2>Mentor List</h2>
+                            <h2>Mentee List</h2>
                             <ol>
                                 <li><a href="ViewTop3Mentor">Home</a></li>
                             </ol>
@@ -73,7 +73,9 @@
                             <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
                                 <div class="member">
                                     <div class="member-img">
-                                        <img src="assets/img/mentor/${m.avatar}" class="img-fluid" alt="">
+                                        <a href="MenteeDetail?id=${m.id}">
+                                            <img src="assets/img/mentor/${m.avatar}" class="img-fluid" alt="">
+                                        </a>
                                         <div class="social">
                                             <a href=""><i class="bi bi-twitter"></i></a>
                                             <a href=""><i class="bi bi-facebook"></i></a>
