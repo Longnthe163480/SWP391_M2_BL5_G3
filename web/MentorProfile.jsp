@@ -1,10 +1,3 @@
-<%-- 
-    Document   : MentorProfile
-    Created on : Mar 22, 2023, 3:49:24 AM
-    Author     : okanh
---%>
-
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -117,8 +110,7 @@
                                 <h2>Edit Profile </h2>
                                 <div>
                                     <button class="btn btn-primary">
-                                        <a href="EditMentorProfile.jsp">Edit</a>
-
+                                        <a href="EditMentorProfile?accmentorid=${account.id}">Edit</a>
                                     </button>
                                 </div>
                             </div>

@@ -33,8 +33,8 @@ public class ViewMentorProfile extends HttpServlet {
         String mess = request.getParameter("mess");
         int mentorid = Integer.parseInt(id);
         MentorDAO dao = new MentorDAO();
-        List<Skill> skill=dao.getSkillMentor(mentorid);
-        List<Job> job=dao.getJobMentor(mentorid);
+        List<Skill> skill = dao.getSkillMentor(mentorid); 
+        List<Job> job = dao.getJobMentor(mentorid);
         Mentor mentor = dao.getMentorbyAccID(mentorid);
         AccountDAO daoa = new AccountDAO();
         Account acc = daoa.getAccountByid(mentorid);
@@ -48,8 +48,6 @@ public class ViewMentorProfile extends HttpServlet {
         request.setAttribute("skill", skill);
         request.setAttribute("job", job);
         request.getRequestDispatcher("MentorProfile.jsp").forward(request, response);
-        System.out.println("Skill size: " + skill.size());
-System.out.println("Job size: " + job.size());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -91,5 +89,4 @@ System.out.println("Job size: " + job.size());
         return "Short description";
     }// </editor-fold>
 
-    
 }
