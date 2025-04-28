@@ -520,30 +520,128 @@ public class MenteeDAO extends DBContext {
         return list;
     }
 
-    public Mentee getMenteeById(int id) {
-        query = "SELECT * FROM Mentee WHERE id=?";
+    // Đếm tổng số request toàn hệ thống
+    public int countAllRequest() {
+        int count = 0;
+        try {
+            query = "SELECT COUNT(*) FROM coderequest";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    // Đếm tổng số hire request toàn hệ thống
+    public int countAllHireRequest() {
+        int count = 0;
+        try {
+            query = "SELECT COUNT(*) FROM hirerequest";
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+        }
+        return count;
+    }
+
+    public List<CodeRequest> getAllRequests(int index) {
+        List<CodeRequest> list = new ArrayList<>();
+        query = "SELECT c.id, c.title, c.content, c.deadline, c.menteeid, m.name as mentee_name, m.avatar as mentee_avatar " +
+                "FROM coderequest c " +
+                "JOIN mentee m ON c.menteeid = m.id " +
+                "ORDER BY c.id " +
+                "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(1, id);
-            System.out.println("Executing query: " + query + " with id=" + id);
+            ps.setInt(1, (index - 1) * 4);
             rs = ps.executeQuery();
             while (rs.next()) {
-                int menteeId = rs.getInt("id");
-                int accountid = rs.getInt("accountid");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                String phone = rs.getString("phone");
-                java.sql.Date birthday = rs.getDate("birthday");
-                String sex = rs.getString("sex");
-                String introduce = rs.getString("introduce");
-                String avatar = rs.getString("avatar");
-                System.out.println("Found mentee: " + name + ", avatar: " + avatar);
-                return new Mentee(menteeId, accountid, name, address, phone, birthday, sex, introduce, avatar);
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                java.sql.Date deadline = rs.getDate("deadline");
+                int menteeid = rs.getInt("menteeid");
+                String menteeName = rs.getString("mentee_name");
+                String menteeAvatar = rs.getString("mentee_avatar");
+                
+                Mentee mentee = new Mentee();
+                mentee.setId(menteeid);
+                mentee.setName(menteeName);
+                mentee.setAvatar(menteeAvatar);
+                
+                CodeRequest request = new CodeRequest(id, title, content, deadline, menteeid);
+                request.setMentee(mentee);
+                list.add(request);
             }
-            System.out.println("No mentee found with id=" + id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
+
+    public int getTotalAllRequests() {
+        query = "SELECT COUNT(*) count FROM coderequest";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<HireRequestlist> getAllHireRequests(int index) {
+        List<HireRequestlist> list = new ArrayList<>();
+        query = "SELECT h.id, m.[name], h.title, h.content, m.costHire, s.[Status] " +
+                "FROM hirerequest h, [status] s, mentor m " +
+                "WHERE h.mentorid = m.id AND h.statusid = s.id " +
+                "ORDER BY h.id " +
+                "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String mentorname = rs.getString("name");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                float cost = rs.getFloat("costHire");
+                String status = rs.getString("Status");
+                list.add(new HireRequestlist(id, mentorname, title, content, cost, status));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getTotalAllHireRequests() {
+        query = "SELECT COUNT(*) count FROM hirerequest";
+        try {
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int x = rs.getInt("count");
+                return x;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

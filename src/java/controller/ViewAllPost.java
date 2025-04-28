@@ -39,7 +39,7 @@ public class ViewAllPost extends HttpServlet {
             }
             
             // Set page size
-            int pageSize = 6;
+            int pageSize = 9;
             
             // Get posts with pagination
             PostDAO postDAO = new PostDAO();

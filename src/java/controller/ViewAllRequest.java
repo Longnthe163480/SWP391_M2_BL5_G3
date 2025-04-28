@@ -31,6 +31,29 @@ public class ViewAllRequest extends HttpServlet {
         String index = request.getParameter("index");
         String menteeid = request.getParameter("menteeid");
         String mentorid = request.getParameter("mentorid");
+        
+        // Handle admin viewing all requests
+        if (menteeid == null && mentorid == null) {
+            if (index == null) {
+                index = "1";
+            }
+            int indexp = Integer.parseInt(index);
+
+            MenteeDAO dao = new MenteeDAO();
+            List<CodeRequest> list = dao.getAllRequests(indexp);
+            
+            int total = dao.getTotalAllRequests();
+            int end = total / 4;
+            if (total % 4 != 0) {
+                end++;
+            }
+
+            request.setAttribute("endpage", end);
+            request.setAttribute("coderequest", list);
+            request.getRequestDispatcher("MyRequest.jsp").forward(request, response);
+            return;
+        }
+        
         if (menteeid != null) {
             int id = Integer.parseInt(menteeid);
             if (index == null) {
