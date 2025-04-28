@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
 
 /**
  *
@@ -398,5 +399,110 @@ public class AccountDAO extends DBContext {
             if (rs.next()) return rs.getInt(1);
         } catch (Exception e) { e.printStackTrace(); }
         return 0;
+    }
+
+    public int insertAccountAndGetId(String username, String password, int roleid, String email) {
+        String sql = "INSERT INTO Account(accountname, password, roleid, email) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, username);
+            st.setString(2, password);
+            st.setInt(3, roleid);
+            st.setString(4, email);
+            st.executeUpdate();
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return -1;
+    }
+
+    public void insertMentee(int accountid, String name, String address, String phone, java.sql.Date birthday, String sex, String introduce, String avatar) {
+        String sql = "INSERT INTO Mentee(accountid, name, address, phone, birthday, sex, introduce, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, accountid);
+            st.setString(2, name);
+            st.setString(3, address);
+            st.setString(4, phone);
+            st.setDate(5, birthday);
+            st.setString(6, sex);
+            st.setString(7, introduce);
+            st.setString(8, avatar);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void insertMentor(int accountid, String name, String address, String phone, java.sql.Date birthday, String sex, String introduce, String achievement, String avatar, float costHire) {
+        String sql = "INSERT INTO Mentor(accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, accountid);
+            st.setString(2, name);
+            st.setString(3, address);
+            st.setString(4, phone);
+            st.setDate(5, birthday);
+            st.setString(6, sex);
+            st.setString(7, introduce);
+            st.setString(8, achievement);
+            st.setString(9, avatar);
+            st.setFloat(10, costHire);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public boolean updateAccountByAdmin(int id, String accountname, String email, int roleid) {
+        String sql = "UPDATE Account SET accountname=?, email=?, roleid=? WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, accountname);
+            ps.setString(2, email);
+            ps.setInt(3, roleid);
+            ps.setInt(4, id);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateAccountByAdminWithPassword(int id, String accountname, String email, int roleid, String password) {
+        String sql = "UPDATE Account SET accountname=?, email=?, roleid=?, password=? WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, accountname);
+            ps.setString(2, email);
+            ps.setInt(3, roleid);
+            ps.setString(4, password);
+            ps.setInt(5, id);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Account checkEmail(String email) {
+        Account account = null;
+        String query = "SELECT * FROM Account WHERE email = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("accountname");
+                String pass = rs.getString("password");
+                int roleid = rs.getInt("roleid");
+                String emails = rs.getString("email");
+                account = new Account(id, name, pass, roleid, emails);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return account;
     }
 }
