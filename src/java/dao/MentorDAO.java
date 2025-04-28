@@ -647,4 +647,14 @@ public List<Job> getJobMentor(int accountId) {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    public void updateMentorAvatar(int mentorid, String avatar) {
+        String sql = "UPDATE Mentor SET avatar=? WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, avatar);
+            st.setInt(2, mentorid);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
 }

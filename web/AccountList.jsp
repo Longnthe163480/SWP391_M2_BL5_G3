@@ -59,9 +59,7 @@
                             <button type="submit" class="btn btn-secondary" ><i class="bi-search"></i></button>  
                         </div> 
                     </form>
-                        <form action="NewAdminAccount.jsp" method="post">
-                        <button type="submit" class="btn btn-outline-primary btn-lg" style="margin-top: 10px;margin-right: 50px;font-size: 15px;float: right; width: 300px;height: 50px;" >Add Admin Account</button>
-                    </form>
+                    <a href="AdminAddAccount" class="btn btn-success btn-lg" style="margin-top: 10px; margin-right: 50px; font-size: 15px; float: right; width: 300px; height: 50px; display: flex; align-items: center; justify-content: center;">Add Account</a>
                 </div>
                 <div class="container-fluid h-custom">
                     <div class="row d-flex justify-content-start align-items-center h-100">
@@ -72,6 +70,7 @@
                                 <th>Password</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>Actions</th>
                             </tr>
                                 <c:forEach items="${allaccount}" var="c">
                                 <tr>
@@ -84,6 +83,9 @@
                                     <c:forEach items="${role}" var="r">
                                         <c:if test="${r.id==c.roleid}">
                                         <td>${r.name}</td>
+                                        <td>
+                                            <a href="AdminEditAccount?id=${c.id}" class="btn btn-primary btn-sm">Edit</a>
+                                        </td>
                                         </c:if>
                                     </c:forEach>
                                 </tr>

@@ -90,7 +90,7 @@
                         ${error}
                     </p>
                 </c:if>
-                <form class="" action="EditMentorProfile?accountid=${sessionScope.account.id}&mentorid=${sessionScope.getmentor.id}" method="post">
+                <form class="" action="EditMentorProfile?accountid=${sessionScope.account.id}&mentorid=${sessionScope.getmentor.id}" method="post" enctype="multipart/form-data">
                         <div class="cr" >
                     <!--Login part--> 
                         <div class="" style="height: 900px;  flex: 1.5;">
@@ -143,6 +143,10 @@
                                         <div class="testimonial-item swiper-slide">
                                             <img src="assets/img/mentor/${sessionScope.getmentor.avatar}" class="testimonial-img" alt="">                   
                                         </div>                                              
+                                    </div>
+                                    <div class="mb-4 text-center">
+                                        <label class="form-label">Current Avatar</label><br>
+                                        <img src="assets/img/mentor/${sessionScope.getmentor.avatar}" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover; border: 2px solid #007bff;" alt="Mentor Avatar">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Phone</label>
