@@ -321,4 +321,82 @@ public class AccountDAO extends DBContext {
             return false;
         }
     }
+
+    public void addSkillAdmin(String name) {
+        String sql = "INSERT INTO Skill(name) VALUES(?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void updateSkillAdmin(int id, String name) {
+        String sql = "UPDATE Skill SET name=? WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void deleteSkillAdmin(int id) {
+        String sql = "DELETE FROM Skill WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public List<entity.Skill> getAllSkills() {
+        List<entity.Skill> list = new ArrayList<>();
+        String sql = "SELECT * FROM Skill";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                entity.Skill s = new entity.Skill();
+                s.setId(rs.getInt("id"));
+                s.setName(rs.getString("name"));
+                list.add(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<entity.Skill> pagingSkill(String search, int page, int pageSize) {
+        List<entity.Skill> list = new ArrayList<>();
+        String sql = "SELECT * FROM Skill WHERE (? IS NULL OR name LIKE ?) ORDER BY id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, search == null || search.isEmpty() ? null : search);
+            st.setString(2, "%" + (search == null ? "" : search) + "%");
+            st.setInt(3, (page - 1) * pageSize);
+            st.setInt(4, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                entity.Skill s = new entity.Skill();
+                s.setId(rs.getInt("id"));
+                s.setName(rs.getString("name"));
+                list.add(s);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    public int countSkill(String search) {
+        String sql = "SELECT COUNT(*) FROM Skill WHERE (? IS NULL OR name LIKE ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, search == null || search.isEmpty() ? null : search);
+            st.setString(2, "%" + (search == null ? "" : search) + "%");
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
 }
