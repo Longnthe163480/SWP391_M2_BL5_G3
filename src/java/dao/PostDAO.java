@@ -8,7 +8,7 @@ import dbcontext.DBContext;
 import entity.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.PreparedStatement;
 /**
  *
  * @author Administrator
@@ -192,5 +192,36 @@ public class PostDAO extends DBContext{
         } catch (Exception e) {
         }
         return false;
+    }
+    
+    public int createPost(Post post) {
+        query = "INSERT INTO Post (accountid, title, content, createdDate, status, featured) VALUES (?,?,?,GETDATE(),?,?)";
+        try {
+            ps = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, post.getAccountId());
+            ps.setString(2, post.getTitle());
+            ps.setString(3, post.getContent());
+            ps.setInt(4, post.getStatus());
+            ps.setBoolean(5, post.isFeatured());
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return -1;
+    }
+    
+    public void addPostImage(PostImage image) {
+        query = "INSERT INTO PostImage (postId, imageUrl, isThumbnail) VALUES (?,?,?)";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, image.getPostId());
+            ps.setString(2, image.getImageUrl());
+            ps.setBoolean(3, image.isThumbnail());
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
     }
 }
