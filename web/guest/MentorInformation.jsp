@@ -105,7 +105,7 @@
                         <c:forEach items="${skill}" var="s">
                             <div class="progress">
                                 <div class="progress-bar bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="skill">${s.name} <i class="val">100%</i></span>
+                                    <span class="skill">${s.name} <i class="val"></i></span>
                                 </div>
                             </div>
                         </c:forEach>

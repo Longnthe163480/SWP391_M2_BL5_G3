@@ -4,18 +4,22 @@
  */
 package controller;
 
-import dao.*;
-import entity.*;
+import dao.PostDAO;
 import entity.Account;
+import entity.Comment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
+import jakarta.servlet.http.HttpSession;
 
-public class EditMenteeProfile extends HttpServlet {
+/**
+ *
+ * @author Administrator
+ */
+public class CreateComment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,8 +32,49 @@ public class EditMenteeProfile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        try {
+            // Get current user from session
+            HttpSession session = request.getSession();
+            Account account = (Account) session.getAttribute("account");
 
+            if (account == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            // Get comment parameters
+            String postIdStr = request.getParameter("postId");
+            String content = request.getParameter("content");
+            String parentIdStr = request.getParameter("parentId");
+
+            if (postIdStr == null || content == null || content.trim().isEmpty()) {
+                response.sendRedirect("ViewPostDetail?id=" + postIdStr);
+                return;
+            }
+
+            int postId = Integer.parseInt(postIdStr);
+
+            // Create new comment
+            Comment comment = new Comment();
+            comment.setPostId(postId);
+            comment.setAccountId(account.getId());
+            comment.setContent(content);
+
+            // Set parent comment if exists
+            if (parentIdStr != null && !parentIdStr.isEmpty()) {
+                comment.setParentId(Integer.parseInt(parentIdStr));
+            }
+
+            // Add comment to database
+            PostDAO postDAO = new PostDAO();
+            postDAO.addComment(comment);
+
+            // Redirect back to post detail
+            response.sendRedirect("ViewPostDetail?id=" + postId);
+        } catch (Exception e) {
+            request.setAttribute("error", "Error adding comment: " + e.getMessage());
+            request.getRequestDispatcher("ViewPostDetail.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,30 +104,6 @@ public class EditMenteeProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String name = request.getParameter("name");
-        String sex = request.getParameter("sex");
-        String address = request.getParameter("address");
-        String phone = request.getParameter("phone");
-        String birthday = request.getParameter("birthday");
-        String email = request.getParameter("email");
-        String accountid = request.getParameter("accountid");
-        String mentee = request.getParameter("menteeid");
-        int accid = Integer.parseInt(accountid);
-        int mid = Integer.parseInt(mentee);
-
-        Date birth = Date.valueOf(birthday);
-        MenteeDAO dao = new MenteeDAO();
-        String mess = null;
-        Account a = dao.checkEmail(email);
-        if (a != null && a.getId() != accid) {
-            mess = "Email is exist";
-            request.getRequestDispatcher("ViewMenteeProfile?accmenteeid=" + accid + "&mess=" + mess).forward(request, response);
-        } else {
-            dao.updateEmailMenteeProfile(accid, email);
-            dao.updateMorMenteeProfile(mid, name, sex, address, phone, birth);
-            mess = "Edit is successful";
-            request.getRequestDispatcher("ViewMenteeProfile?accmenteeid=" + accid + "&mess=" + mess).forward(request, response);
-        }
     }
 
     /**

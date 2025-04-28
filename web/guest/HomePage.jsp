@@ -102,7 +102,7 @@
                     <div class="carousel-container">
                         <h2 class="animate__animated animate__fadeInDown">Welcome to <span>HappyProgamming</span></h2>
                         <p class="animate__animated animate__fadeInUp">You can bring your programming questions to our advisors for answers. Together, progress in programming and become excellent programmers in the future. Nice to meet you.</p>
-                        <a href="" class="btn-get-started animate__animated animate__fadeInUp">Read More</a>
+                        <a href="ViewAllPost" class="btn-get-started animate__animated animate__fadeInUp">Join Forums</a>
                     </div>
                 </div>
 
