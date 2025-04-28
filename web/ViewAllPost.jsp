@@ -34,7 +34,7 @@
     </head>
     <body>
         <jsp:include page="guest/Header.jsp"></jsp:include>
-        <div class="container mt-4">
+        <div class="container mt-4 mb-5">
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>All Posts</h1>
@@ -87,14 +87,38 @@
             <!-- Pagination -->
             <c:if test="${totalPages > 1}">
                 <nav aria-label="Page navigation" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <c:forEach begin="1" end="${totalPages}" var="i">
-                            <li class="page-item ${currentPage == i ? 'active' : ''}">
-                                <a class="page-link" href="ViewAllPost?page=${i}">${i}</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <ul class="pagination mb-0">
+                            <!-- Previous button -->
+                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="ViewAllPost?page=${currentPage - 1}" ${currentPage == 1 ? 'tabindex="-1" aria-disabled="true"' : ''}>
+                                    <i class="bi bi-chevron-left"></i> Previous
+                                </a>
                             </li>
-                        </c:forEach>
-                    </ul>
+                            
+                            <!-- Page numbers -->
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                    <a class="page-link" href="ViewAllPost?page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+                            
+                            <!-- Next button -->
+                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                <a class="page-link" href="ViewAllPost?page=${currentPage + 1}" ${currentPage == totalPages ? 'tabindex="-1" aria-disabled="true"' : ''}>
+                                    Next <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
+            </c:if>
+            
+            <!-- No posts message -->
+            <c:if test="${empty posts}">
+                <div class="alert alert-info text-center">
+                    No posts found.
+                </div>
             </c:if>
         </div>
         <jsp:include page="guest/Footer.jsp"></jsp:include>
