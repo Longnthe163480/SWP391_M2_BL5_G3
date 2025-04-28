@@ -128,6 +128,14 @@
         <servlet-name>ViewPostDetail</servlet-name>
         <servlet-class>controller.ViewPostDetail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LikePost</servlet-name>
+        <servlet-class>controller.LikePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateComment</servlet-name>
+        <servlet-class>controller.CreateComment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -255,6 +263,14 @@
     <servlet-mapping>
         <servlet-name>ViewPostDetail</servlet-name>
         <url-pattern>/ViewPostDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LikePost</servlet-name>
+        <url-pattern>/LikePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateComment</servlet-name>
+        <url-pattern>/CreateComment</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
