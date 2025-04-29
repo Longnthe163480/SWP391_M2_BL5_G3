@@ -644,4 +644,28 @@ public class MenteeDAO extends DBContext {
         return 0;
     }
 
+    public Mentee getMenteeById(int id) {
+        query = "SELECT * FROM Mentee WHERE id=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int menteeId = rs.getInt("id");
+                int accountid = rs.getInt("accountid");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                java.sql.Date birthday = rs.getDate("birthday");
+                String sex = rs.getString("sex");
+                String introduce = rs.getString("introduce");
+                String avatar = rs.getString("avatar");
+                return new Mentee(menteeId, accountid, name, address, phone, birthday, sex, introduce, avatar);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
