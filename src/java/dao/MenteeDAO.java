@@ -16,6 +16,7 @@ import entity.Mentee;
 import entity.Mentor;
 import entity.Skill;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -666,6 +667,68 @@ public class MenteeDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<HireRequestlist> pagingMentorHireRequest(int mentorid, int index) {
+        List<HireRequestlist> list = new ArrayList<>();
+        query = "SELECT h.id, h.menteeid, h.mentorid, h.title, h.content, h.statusid, s.[Status] as statusname, m.[name] as menteename, mt.costHire " +
+                "FROM hirerequest h " +
+                "JOIN mentee m ON h.menteeid = m.id " +
+                "JOIN [status] s ON h.statusid = s.id " +
+                "JOIN mentor mt ON h.mentorid = mt.id " +
+                "WHERE h.mentorid = ? " +
+                "ORDER BY h.id " +
+                "OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mentorid);
+            ps.setInt(2, (index - 1) * 4);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String mentorname = rs.getString("menteename");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                float costhire = rs.getFloat("costHire");
+                String status = rs.getString("statusname");
+                list.add(new HireRequestlist(id, mentorname, title, content, costhire, status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error in pagingMentorHireRequest: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public int getTotalMentorHireRequest(int mentorid) {
+        query = "SELECT COUNT(*) count FROM hirerequest WHERE mentorid = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, mentorid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log the error
+            System.err.println("Error in getTotalMentorHireRequest: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
 }
