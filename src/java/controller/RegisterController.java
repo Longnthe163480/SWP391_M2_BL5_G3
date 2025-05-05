@@ -84,9 +84,19 @@ public class RegisterController extends HttpServlet {
             // Nếu không có lỗi, xác định roleid và chèn tài khoản
             int roleid = role.equals("Mentor") ? 2 : 1;
             AccountDAO dao = new AccountDAO();
-            dao.insertAccount(username, hashedPassword, roleid, email);
-            response.sendRedirect("Login.jsp?msg=success");
+            int accountid = dao.insertAccountAndGetId(username, hashedPassword, roleid, email);
+   if (accountid > 0) {
+       if (roleid == 2) { // Mentor
+           dao.insertMentor(accountid, fullname, "default", "default", null, "M", "default", "default", "mentor1.jpg", 0f);
+       } else if (roleid == 1) { // Mentee
+           dao.insertMentee(accountid, fullname, "default", "default", null, "M", "default", "mentee1.jpg");
+       }
+       response.sendRedirect("Login.jsp?msg=success");
+   } else {
+       request.setAttribute("errorMsg", "Registration failed. Please try again.");
+       request.getRequestDispatcher("Register.jsp").forward(request, response);
         }
+    }
     }
 
     /**
