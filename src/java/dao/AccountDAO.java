@@ -6,6 +6,7 @@ package dao;
 
 import dbcontext.DBContext;
 import entity.Account;
+import entity.Job;
 import entity.Mentee;
 import entity.Role;
 import java.sql.PreparedStatement;
@@ -611,5 +612,65 @@ public class AccountDAO extends DBContext {
             ps.close();
         } catch (Exception e) {
         }
+    }
+
+    public List<Job> pagingJob(String search, int page, int pageSize) {
+        List<Job> list = new ArrayList<>();
+        String sql = "SELECT * FROM Job WHERE (? IS NULL OR jobname LIKE ?) ORDER BY id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, search == null || search.isEmpty() ? null : search);
+            st.setString(2, "%" + (search == null ? "" : search) + "%");
+            st.setInt(3, (page - 1) * pageSize);
+            st.setInt(4, pageSize);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Job j = new Job();
+                j.setId(rs.getInt("id"));
+                j.setJobname(rs.getString("jobname"));
+                list.add(j);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    public int countJob(String search) {
+        String sql = "SELECT COUNT(*) FROM Job WHERE (? IS NULL OR jobname LIKE ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, search == null || search.isEmpty() ? null : search);
+            st.setString(2, "%" + (search == null ? "" : search) + "%");
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    public void addJobAdmin(String name) {
+        String sql = "INSERT INTO Job(jobname) VALUES(?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void updateJobAdmin(int id, String name) {
+        String sql = "UPDATE Job SET jobname=? WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, name);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void deleteJobAdmin(int id) {
+        String sql = "DELETE FROM Job WHERE id=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }
