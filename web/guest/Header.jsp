@@ -80,6 +80,7 @@
                                     <li><a href="ViewAllAccount">Account List</a></li>
                                     <li><a href="ViewAllMentee">Mentee List</a></li>
                                     <li><a href="AdminSkillManager">Skill Manager</a></li>
+                                    <li><a href="JobManager">Job Manager</a></li>
                                     </c:if>
                                     <li><a href="LogOut?accountid=${sessionScope.account.id}">Sign Out</a></li>
                                     
