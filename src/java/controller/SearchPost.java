@@ -45,10 +45,10 @@ public class SearchPost extends HttpServlet {
                 posts = List.of();
             }
             request.setAttribute("posts", posts);
-            request.getRequestDispatcher("SearchPost.jsp").forward(request, response);
+            request.getRequestDispatcher("ViewAllPost.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", "Error searching posts: " + e.getMessage());
-            request.getRequestDispatcher("SearchPost.jsp").forward(request, response);
+            request.getRequestDispatcher("ViewAllPost.jsp").forward(request, response);
         }
     } 
 
