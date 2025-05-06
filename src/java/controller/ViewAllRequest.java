@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
 
 public class ViewAllRequest extends HttpServlet {
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

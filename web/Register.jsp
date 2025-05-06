@@ -46,13 +46,6 @@
                                 <input type="text" name="fullname" class="input-field" placeholder="Fullname" required value="${param.fullname}">
                                 <i class="bx bx-user"></i>
                             </div>
-                            <div style="width: 50%;" class="input-box">
-                                <select class="condition" name="gender" required>
-                                    <option value="Male" ${param.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                    <option value="Female" ${param.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                </select>
-                                <i class="bx bx-male-female"></i>
-                            </div>
                         </div>
                         <div class="two-forms">
                             <div style="width: 50%;" class="input-box">
@@ -85,10 +78,6 @@
                             <c:set var="errorType3" value="${errorMsg.contains('email')}"/>
                             <input type="text" name="email" class="input-field ${errorType3 ? 'input-field-error' : ''}" placeholder="Email" required value="${param.newemail}">
                             <i class="bx bx-envelope"></i>
-                        </div>
-                        <div class="input-box">
-                            <input type="date" name="dob" id="dob" class="input-field" placeholder="Dob" required value="${param.dob}">
-                            <i class="bx bx-user"></i>
                         </div>
                         <c:if test="${not empty errorMsg}">
                             <div class="errorMsg" style="color: red; background-color: rgba(255, 255, 255, 0.7); padding: 10px; margin-bottom: 20px; border-radius: 30px;">

@@ -81,7 +81,7 @@
                         <!--Username input--> 
                         <div class="mb-3">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
-                            <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentee.name}" required pattern="[A-Za-z\s]+" title="Name must contain only letters and spaces">   
+                            <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentee.name}" required pattern="[\p{L}\s]+" title="Name must contain only letters and spaces">   
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Sex <span class="text-danger">*</span></label><br>

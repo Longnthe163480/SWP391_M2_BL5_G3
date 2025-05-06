@@ -90,7 +90,7 @@
                         ${error}
                     </p>
                 </c:if>
-               <form class="" action="EditMentorProfile?accountid=${sessionScope.account.id}&mentorid=${sessionScope.getmentor.id}" method="post">
+               <form class="" action="EditMentorProfile?accountid=${sessionScope.account.id}&mentorid=${sessionScope.getmentor.id}" method="post" accept-charset="UTF-8">
                         <div class="cr" >
                     <!--Login part--> 
                         <div class="" style="height: 900px;  flex: 1.5;">
@@ -101,7 +101,7 @@
                             <!--Username input--> 
                             <div class="mb-3">
                                 <label class="form-label">Name <span class="text-danger">*</span></label>
-                                <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.name}" required pattern="[A-Za-z\s]+" title="Name must contain only letters and spaces">   
+                                <input name="name" type="text" class="form-control form-control-lg" value="${sessionScope.getmentor.name}" required pattern="[\p{L}\s]+" title="Name must contain only letters and spaces">   
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Sex <span class="text-danger">*</span></label><br>
