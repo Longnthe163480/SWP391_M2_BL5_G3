@@ -33,8 +33,8 @@
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label">New Password (leave blank to keep current)</label>
-            <input name="password" type="password" class="form-control" autocomplete="new-password" minlength="6" title="Password must be at least 6 characters">
+            <label class="form-label">New Password (leave blank to keep current)<span class="text-danger">*</span></label>
+            <input name="password" type="password" class="form-control" autocomplete="new-password" minlength="6" title="Password must be at least 6 characters" required="">
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
         <a href="AccountList.jsp" class="btn btn-secondary">Cancel</a>

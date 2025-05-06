@@ -119,9 +119,11 @@ public class MentorDAO extends DBContext {
         query = "WITH t AS(SELECT mc.mentorid id,AVG(CAST (f.star AS FLOAT(2))) averageStar FROM Feedback f, feedbackanswer fa, answer a, mentorcoderequest mc\n"
                 + "WHERE f.id=fa.feedbackid and fa.answerid=a.id and a.mentorcoderequestid=mc.id\n"
                 + "GROUP BY mc.mentorid)\n"
-                + "SELECT TOP (2) m.id,m.accountid,m.name,m.address,m.phone,m.birthday,m.sex,m.introduce,m.achievement,m.avatar,m.costHire,t.averageStar\n"
-                + "FROM mentor m,t WHERE m.id=t.id\n"
-                + "ORDER BY t.averageStar";
+                + "SELECT TOP (3) m.id,m.accountid,m.name,m.address,m.phone,m.birthday,m.sex,m.introduce,m.achievement,m.avatar,m.costHire,\n"
+                + "COALESCE(t.averageStar, 0) as averageStar\n"
+                + "FROM mentor m\n"
+                + "LEFT JOIN t ON m.id=t.id\n"
+                + "ORDER BY COALESCE(t.averageStar, 0) DESC";
         try {
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
@@ -141,6 +143,7 @@ public class MentorDAO extends DBContext {
                 list.add(new Mentor(id, accountid, name, address, phone, birthday, sex, introduce, achievement, avatar, costHire, averageStar));
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }

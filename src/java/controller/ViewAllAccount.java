@@ -33,21 +33,23 @@ public class ViewAllAccount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        AccountDAO dao=new AccountDAO();
-        String index=request.getParameter("index");
-        if(index==null) index="1";
-        int indexp=Integer.parseInt(index);
-        
-        
-        List<Account> list=dao.pagingAccount(indexp);
-        
-        
-        int total=dao.getTotalAccount();
-        int end=total/4;
-        if(total%4!=0) end++;
-        
-        List<Role> role=dao.getRole();
-        
+        AccountDAO dao = new AccountDAO();
+        String index = request.getParameter("index");
+        if (index == null) {
+            index = "1";
+        }
+        int indexp = Integer.parseInt(index);
+
+        List<Account> list = dao.pagingAccount(indexp);
+
+        int total = dao.getTotalAccount();
+        int end = total / 4;
+        if (total % 4 != 0) {
+            end++;
+        }
+
+        List<Role> role = dao.getRole();
+
         request.setAttribute("endpage", end);
         request.setAttribute("allaccount", list);
         request.setAttribute("role", role);
