@@ -67,47 +67,7 @@ public class EmailUtil {
                         + "Note: Your temporary password is only available in 3 mins from the momment this email is sent!!\n\n"
                         + "http://localhost:8080/SWP391_M2_BL5_G3/Login.jsp \n\n"
                         + "Thank you.";
-            } else if (type.equals("signup")) {
-                //GenOTP
-                generatedValue = passUtil.generateOTP();
-                //Subject
-                msg.setSubject("Request signup ");
-                //Content
-                emailContent = "Hello user,\n\n"
-                        + "** This is an automated message -- please do not reply as you will not receive a response. **\n\n"
-                        + "This message is in response to your request to signup. Please enter the following OTP, remember to not share this with anyone.\n\n"
-                        + "Your OTP is: " + generatedValue + "\n\n"
-                        + "Note: This OTP Code is only available in 3 mins from the momment this email is sent!!\n\n"
-                        + "http://localhost:8080/SWP391_M2_BL5_G3/Login.jsp \n\n"
-                        + "Thank you.";
-            } else if (type.equals("lecturerpass")) {
-                //Subject
-                msg.setSubject("Change Your Password");
-
-                //Content
-                emailContent = "Hello user,\n\n"
-                        + "** This is an automated message -- please do not reply as you will not receive a response. **\n\n"
-                        + "This message notice about your new creator account in our website. Please click the link below, use your username and follow the instructions to change your password.\n\n"
-                        + "Your password is: " + generatedValue + "\n\n"
-                        + "http://localhost:8080/SWP391_M2_BL5_G3/Login.jsp \n\n"
-                        + "Thank you.";
-            } else if (type.equals("Banned account")) {
-                //Subject
-                msg.setSubject("Deative account");
-                //Content
-                emailContent = "Hello user,\n\n"
-                        + "** This is an automated message -- please do not reply as you will not receive a response. **\n\n"
-                        + "This message notice about your account in our website has no longer active.\n\n"
-                        + "Thank you.";
-            } else if (type.equals("UnBanned account")) {
-                //Subject
-                msg.setSubject("Avtive account");
-                //Content
-                emailContent = "Hello user,\n\n"
-                        + "** This is an automated message -- please do not reply as you will not receive a response. **\n\n"
-                        + "This message notice about your account in our website is active.\n\n"
-                        + "Thank you.";
-            }
+            } 
             msg.setText(emailContent, "UTF-8");
             //Send Email
             Transport.send(msg);

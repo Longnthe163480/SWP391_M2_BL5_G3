@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet-mapping>
+        <servlet-name>MentorAnalytics</servlet-name>
+        <url-pattern>/MentorAnalytics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackDetailsController</servlet-name>
+        <url-pattern>/FeedbackDetailsController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
@@ -194,6 +202,14 @@
     <servlet>
         <servlet-name>JobManager</servlet-name>
         <servlet-class>controller.JobManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MentorAnalytics</servlet-name>
+        <servlet-class>controller.MentorAnalytics</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedbackDetailsController</servlet-name>
+        <servlet-class>controller.FeedbackDetailsController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>

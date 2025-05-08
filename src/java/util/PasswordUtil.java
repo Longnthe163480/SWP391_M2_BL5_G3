@@ -50,35 +50,6 @@ public class PasswordUtil {
         }
     }
 
-    //Generate OTP
-    public String generateOTP() {
-        SecureRandom random = new SecureRandom();
-
-        // Define regex patterns for each required character type
-        String digitPattern = "(?=.*[" + DIGITS + "])";
-
-        // Combine the patterns into a single regex pattern
-        String passwordPattern = digitPattern + ".{3,}";
-
-        Pattern pattern = Pattern.compile(passwordPattern);
-        while (true) {
-            StringBuilder password = new StringBuilder();
-            int passwordLength = 6;
-            // Generate a random password
-            for (int i = 0; i < passwordLength; i++) {
-                String characterSet = DIGITS;
-                int randomIndex = random.nextInt(characterSet.length());
-                char randomChar = characterSet.charAt(randomIndex);
-                password.append(randomChar);
-            }
-            // Check if the generated password meets the regex pattern
-            Matcher matcher = pattern.matcher(password.toString());
-            if (matcher.matches()) {
-                return password.toString();
-            }
-        }
-    }
-
     public String hashPasswordMD5(String password) {
         try {
             // Create a MessageDigest instance for MD5
