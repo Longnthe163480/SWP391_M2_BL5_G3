@@ -312,4 +312,104 @@ public class PostDAO extends DBContext{
             ps.executeUpdate();
         } catch (Exception e) {}
     }
+    public List<Post> getPostsByAccountId(int accountId, int page, int pageSize) {
+        List<Post> posts = new ArrayList<>();
+        query = "SELECT * FROM Post WHERE accountid=? ORDER BY createdDate DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            ps.setInt(2, (page - 1) * pageSize);
+            ps.setInt(3, pageSize);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setAccountId(rs.getInt("accountid"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setCreatedDate(rs.getDate("createdDate"));
+                post.setModifiedDate(rs.getDate("modifiedDate"));
+                post.setViewCount(rs.getInt("viewCount"));
+                post.setStatus(rs.getInt("status"));
+                post.setFeatured(rs.getBoolean("featured"));
+                posts.add(post);
+            }
+        } catch (Exception e) {
+        }
+        return posts;
+    }
+
+    public int getTotalPostsByAccountId(int accountId) {
+        query = "SELECT COUNT(*) FROM Post WHERE accountid=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count;
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    // Saved Post (Bookmark) methods
+    public boolean hasSaved(int accountId, int postId) {
+        String query = "SELECT COUNT(*) FROM SavedPost WHERE accountId=? AND postId=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            ps.setInt(2, postId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {}
+        return false;
+    }
+
+    public void savePost(int accountId, int postId) {
+        String query = "INSERT INTO SavedPost (accountId, postId, savedAt) VALUES (?, ?, GETDATE())";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            ps.setInt(2, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+    }
+
+    public void unsavePost(int accountId, int postId) {
+        String query = "DELETE FROM SavedPost WHERE accountId=? AND postId=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            ps.setInt(2, postId);
+            ps.executeUpdate();
+        } catch (Exception e) {}
+    }
+
+    public List<Post> getSavedPostsByAccountId(int accountId) {
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT p.* FROM SavedPost s JOIN Post p ON s.postId = p.id WHERE s.accountId=? ORDER BY s.savedAt DESC";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, accountId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setAccountId(rs.getInt("accountid"));
+                post.setTitle(rs.getString("title"));
+                post.setContent(rs.getString("content"));
+                post.setCreatedDate(rs.getDate("createdDate"));
+                post.setModifiedDate(rs.getDate("modifiedDate"));
+                post.setViewCount(rs.getInt("viewCount"));
+                post.setStatus(rs.getInt("status"));
+                post.setFeatured(rs.getBoolean("featured"));
+                posts.add(post);
+            }
+        } catch (Exception e) {}
+        return posts;
+    }
 }

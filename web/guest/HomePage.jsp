@@ -73,11 +73,15 @@
                                         <li><a href="ViewMenteeProfile?accmenteeid=${sessionScope.getmentee.accountid}">Profile</a></li>
                                         <li><a href="ViewAllRequest?menteeid=${sessionScope.getmentee.id}">My Request</a></li>
                                         <li><a href="ViewAllHireRequest?menteeid=${sessionScope.getmentee.id}">My Hire Request</a></li>
+                                        <li><a href="MyPost">My Posts</a></li>
+                                        <li><a href="SavedPost">Favorite Post</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.getmentor!=null}">
                                     <li><a href="ViewMentorProfile?accmentorid=${sessionScope.getmentor.accountid}">Profile</a></li>
                                     <li><a href="ViewAllRequest?mentorid=${sessionScope.getmentor.id}">My Request</a></li>
                                      <li><a href="ViewMentorHireRequest?mentorid=${sessionScope.getmentor.id}">Hire Requests</a></li>
+                                     <li><a href="MyPost">My Posts</a></li>
+                                     <li><a href="SavedPost">Favorite Post</a></li>
                                     </c:if>
                 
                                     <c:if test="${sessionScope.account.roleid==3}">

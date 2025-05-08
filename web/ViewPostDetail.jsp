@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${post.title}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <style>
             body {
                 padding-top: 60px; /* Thêm padding-top để tránh bị Header che */
@@ -69,6 +70,22 @@
                                     </c:choose>
                                 </button>
                             </form>
+                            <!-- Save/Unsave button, chỉ hiện nếu không phải chủ post -->
+                            <c:if test="${sessionScope.account.id != post.accountId}">
+                                <form action="SavePost" method="post" style="display:inline; margin-left: 16px;">
+                                    <input type="hidden" name="postId" value="${post.id}" />
+                                    <button type="submit" class="btn btn-link p-0" style="font-size:1.1rem;">
+                                        <c:choose>
+                                            <c:when test="${hasSaved}">
+                                                <i class="bi bi-bookmark-fill text-warning"></i> Unsave
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-bookmark"></i> Save
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </button>
+                                </form>
+                            </c:if>
                             <c:if test="${sessionScope.account.id == post.accountId}">
                                 <a href="EditPost?id=${post.id}" class="btn btn-outline-secondary btn-sm ms-3">Edit Post</a>
                                 <form action="DeletePost" method="post" style="display:inline; margin-left: 8px;">
