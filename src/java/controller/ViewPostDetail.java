@@ -99,10 +99,12 @@ public class ViewPostDetail extends HttpServlet {
             // Get like
             int likeCount = postDAO.getLikeCount(postId);
             boolean hasLiked = false;
+            boolean hasSaved = false;
             Object accObj = request.getSession().getAttribute("account");
             if (accObj != null && accObj instanceof entity.Account) {
                 int accId = ((entity.Account) accObj).getId();
                 hasLiked = postDAO.hasLiked(postId, accId);
+                hasSaved = postDAO.hasSaved(accId, postId);
             }
             // Get Image 
             List<PostImage> postImages = postDAO.getPostImages(postId);
@@ -113,6 +115,7 @@ public class ViewPostDetail extends HttpServlet {
             request.setAttribute("accountNameMap", accountNameMap);
             request.setAttribute("likeCount", likeCount);
             request.setAttribute("hasLiked", hasLiked);
+            request.setAttribute("hasSaved", hasSaved);
             // Forward to JSP
             request.getRequestDispatcher("ViewPostDetail.jsp").forward(request, response);
         } catch (Exception e) {

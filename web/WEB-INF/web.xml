@@ -200,6 +200,18 @@
         <servlet-name>FeedbackDetailsController</servlet-name>
         <servlet-class>controller.FeedbackDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyPost</servlet-name>
+        <servlet-class>controller.MyPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SavedPost</servlet-name>
+        <servlet-class>controller.SavedPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SavePost</servlet-name>
+        <servlet-class>controller.SavePost</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ViewMenteeProfile</servlet-name>
         <url-pattern>/ViewMenteeProfile</url-pattern>
@@ -407,6 +419,18 @@
     <servlet-mapping>
         <servlet-name>FeedbackDetailsController</servlet-name>
         <url-pattern>/feedback-details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyPost</servlet-name>
+        <url-pattern>/MyPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SavedPost</servlet-name>
+        <url-pattern>/SavedPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SavePost</servlet-name>
+        <url-pattern>/SavePost</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>ViewTop3Mentor</welcome-file>
