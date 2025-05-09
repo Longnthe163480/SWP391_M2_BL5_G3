@@ -45,7 +45,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Success Rate</h5>
+                        <h5 class="card-title">Accepted Rate</h5>
                         <p class="card-text h3">
                             <c:set var="accepted" value="${requestStats['Accepted'] != null ? requestStats['Accepted'] : 0}" />
                             <c:set var="rejected" value="${requestStats['Rejected'] != null ? requestStats['Rejected'] : 0}" />
