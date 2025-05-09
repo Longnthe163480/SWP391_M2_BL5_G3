@@ -56,10 +56,10 @@
                     <ul>
                         <li><a class="active " href="ViewTop3Mentor">Home</a></li>
                         <li><a href="ViewAllMentor">Mentor</a></li>
-                        <c:if test="${sessionScope.account==null}">
-                        <li><a href="Login">Sign In</a></li>
-                        <li><a href="Register.jsp">Sign Up</a></li>
-                        </c:if>
+                            <c:if test="${sessionScope.account==null}">
+                            <li><a href="Login">Sign In</a></li>
+                            <li><a href="Register.jsp">Sign Up</a></li>
+                            </c:if>
                             <c:if test="${sessionScope.account!=null}">
                                 <c:if test="${sessionScope.getmentee!=null}">
                                 <li class="dropdown"><a href="#"><span>Hello ${sessionScope.getmentee.name} </span> <i class="bi bi-chevron-down"></i></a>
@@ -69,28 +69,29 @@
                                     </c:if>
                                 <ul>
                                     <li><a href="ChangePassword.jsp">Change Pasword</a></li>
-                                    <c:if test="${sessionScope.getmentee!=null}">
+                                        <c:if test="${sessionScope.getmentee!=null}">
                                         <li><a href="ViewMenteeProfile?accmenteeid=${sessionScope.getmentee.accountid}">Profile</a></li>
                                         <li><a href="ViewAllRequest?menteeid=${sessionScope.getmentee.id}">My Request</a></li>
                                         <li><a href="ViewAllHireRequest?menteeid=${sessionScope.getmentee.id}">My Hire Request</a></li>
                                         <li><a href="MyPost">My Posts</a></li>
                                         <li><a href="SavedPost">Favorite Post</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.getmentor!=null}">
-                                    <li><a href="ViewMentorProfile?accmentorid=${sessionScope.getmentor.accountid}">Profile</a></li>
-                                    <li><a href="ViewAllRequest?mentorid=${sessionScope.getmentor.id}">My Request</a></li>
-                                     <li><a href="ViewMentorHireRequest?mentorid=${sessionScope.getmentor.id}">Hire Requests</a></li>
-                                     <li><a href="MyPost">My Posts</a></li>
-                                     <li><a href="SavedPost">Favorite Post</a></li>
-                                    </c:if>
-                
+                                        </c:if>
+                                        <c:if test="${sessionScope.getmentor!=null}">
+                                        <li><a href="ViewMentorProfile?accmentorid=${sessionScope.getmentor.accountid}">Profile</a></li>
+                                        <li><a href="ViewAllRequest?mentorid=${sessionScope.getmentor.id}">My Request</a></li>
+                                        <li><a href="ViewMentorHireRequest?mentorid=${sessionScope.getmentor.id}">Hire Requests</a></li>
+                                        <li><a href="mentor-analytics?mentorid=${sessionScope.getmentor.id}">Analytics Dashboard</a></li>
+                                        <li><a href="MyPost">My Posts</a></li>
+                                        <li><a href="SavedPost">Favorite Post</a></li>
+                                        </c:if>
+
                                     <c:if test="${sessionScope.account.roleid==3}">
-                                    <li><a href="AdminDashboard">Dashboard</a></li>    
-                                    <li><a href="ViewAllAccount">Account List</a></li>
-                                    <li><a href="ViewAllMentee">Mentee List</a></li>
-                                    <li><a href="AdminSkillManager">Skill Manager</a></li>
-                                    <li><a href="JobManager">Job Manager</a></li>
-                                    </c:if>
+                                        <li><a href="AdminDashboard">Dashboard</a></li>    
+                                        <li><a href="ViewAllAccount">Account List</a></li>
+                                        <li><a href="ViewAllMentee">Mentee List</a></li>
+                                        <li><a href="AdminSkillManager">Skill Manager</a></li>
+                                        <li><a href="JobManager">Job Manager</a></li>
+                                        </c:if>
                                     <li><a href="LogOut?accountid=${sessionScope.account.id}">Sign Out</a></li>
                                 </ul>
                             </li>

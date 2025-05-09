@@ -53,7 +53,7 @@
                                 <div class="post-meta mb-2">
                                     <i class="bi bi-calendar"></i> ${post.createdDate}
                                     <br>
-                                    <i class="bi bi-eye"></i> ${post.viewCount} views
+                                    
                                 </div>
                                 <p class="card-text post-excerpt">${post.content}</p>
                             </div>
